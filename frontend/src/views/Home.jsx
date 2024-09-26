@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Papa from 'papaparse';
+import data from '../assets/regiones_comunas.json';
 
 export default function Home() {
   const [region, setRegion] = useState('');
@@ -19,30 +19,18 @@ export default function Home() {
     salario: 'CLP 1.500.000',
     cargo: 'Junior'
   }]);
-  const [regionesComunas, setRegionesComunas] = useState({});
 
-  const regiones = ['Metropolitana', 'Arica y Parinacota', 'Tarapacá', 'Antofagasta', 'Atacama', 'Coquimbo', 'Valparaíso', 'O’Higgins', 'Maule', 'Ñuble', 'Biobío', 'La Araucanía', 'Los Ríos', 'Los Lagos', 'Aysén', 'Magallanes y Antártica Chilena'];
-  const comunasPorRegion = {
-    'Metropolitana': ['Santiago', 'Puente Alto', 'San Bernardo'],
-    'Arica y Parinacota': ['Arica', 'Putre'],
-    'Tarapacá': ['Iquique', 'Alto Hospicio'],
-    'Antofagasta': ['Antofagasta', 'Calama'],
-    'Atacama': ['Copiapó', 'Vallenar'],
-    'Coquimbo': ['La Serena', 'Coquimbo'],
-    'Valparaíso': ['Valparaíso', 'Viña del Mar'],
-    'O’Higgins': ['Rancagua', 'San Fernando'],
-    'Maule': ['Talca', 'Curicó'],
-    'Ñuble': ['Chillán', 'Bulnes'],
-    'Biobío': ['Concepción', 'Los Ángeles'],
-    'La Araucanía': ['Temuco', 'Angol'],
-    'Los Ríos': ['Valdivia', 'La Unión'],
-    'Los Lagos': ['Puerto Montt', 'Osorno'],
-    'Aysén': ['Coyhaique', 'Chile Chico'],
-    'Magallanes y Antártica Chilena': ['Punta Arenas', 'Puerto Natales']
-  };
+  const [comunasPorRegion, setComunasPorRegion] = useState({});
+  const [regiones, setRegiones] = useState([]);
+
 
   const nivelesEducativos = ['Sin educación formal', 'Educación básica incompleta', 'Educación básica completa', 'Educación media incompleta', 'Educación media completa', 'Educación técnica incompleta', 'Educación técnica completa', 'Educación universitaria incompleta', 'Educación universitaria completa', 'Magíster', 'Doctorado'];
   const jornadasLaborales = ['Full time', 'Part time'];
+
+  useEffect(() => {
+    setComunasPorRegion(JSON.parse(JSON.stringify(data)));
+    setRegiones(Object.keys(data));
+  }, []);
 
   const handleRegionChange = (e) => {
     const selectedRegion = e.target.value;
