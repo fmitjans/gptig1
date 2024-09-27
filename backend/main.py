@@ -6,12 +6,13 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from bs4 import BeautifulSoup
+import json
 
-url = 'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre=software&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
+search_text = 'software'
+url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={search_text}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
 
 
-usar_firefox = True
+usar_firefox = False#True
 if usar_firefox:
     service = Service("/snap/bin/firefox.geckodriver")
     driver = webdriver.Firefox(service=service)
@@ -20,21 +21,17 @@ else:
     
 driver.get(url)
 
-resultados = [None for i in range(5)]
-
-
+resultados = [dict() for i in range(5)]
 tags = ["datosEmpresaOferta", "tituloOferta", "descripcionOferta"]
 for tag in tags:
     elements = driver.find_elements(By.CLASS_NAME, tag)
-    for i in range(5):
-        if i < len(elements):
-            element = elements[i]
-            text = element.get_attribute('textContent').strip()
-            text = text.split("     ")[0].strip()
-            if resultados[i] == None:
-                resultados[i] = {}
-            resultados[i][tag] = text
+    n_elements = min(len(elements), 5)
+    for i in range(n_elements):
+        text = elements[i].get_attribute('textContent').strip()
+        text = text.split("     ")[0].strip()
+        resultados[i][tag] = text
 
-print(resultados)
+resultados_json_str = json.dumps(resultados, indent=2, ensure_ascii= False)
+print(resultados_json_str)
 
 driver.close()
