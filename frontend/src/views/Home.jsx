@@ -10,6 +10,7 @@ export default function Home() {
   const [nivelEducativo, setNivelEducativo] = useState('');
   const [jornadaLaboral, setJornadaLaboral] = useState('');
   const [fechaPublicacion, setFechaPublicacion] = useState('');
+  const [buttonText, setButtonText] = useState('Buscar');
   const [jobs, setJobs] = useState([{
     empresa: 'Empresa Ejemplo',
     region: 'Región Ejemplo',
@@ -18,7 +19,9 @@ export default function Home() {
     experiencia: '3 años',
     jornada: 'Full time',
     salario: 'CLP 1.500.000',
-    cargo: 'Junior'
+    cargo: 'Junior',
+    titulo: 'Desarrollador Full Stack',
+    descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
   }]);
 
   const [comunasPorRegion, setComunasPorRegion] = useState({});
@@ -44,6 +47,30 @@ export default function Home() {
       jornadaLaboral,
       fechaPublicacion,
     };
+
+    setButtonText('Buscando...');
+    // temporal, cambiar por axios
+
+    fetch(`http://localhost:8000?keyword=${encodeURIComponent(searchKeyword)}`)
+      .then(response => response.json())
+      .then(data => {
+        // datosEmpresaOferta
+        // descripcionOferta
+        // tituloOferta
+        const renamedJobs = data.map(job => ({
+          empresa: job.datosEmpresaOferta,
+          descripcion: job.descripcionOferta,
+          titulo: job.tituloOferta
+        }));
+        console.log(renamedJobs); // Print the greeting message
+        setJobs(renamedJobs);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+      setButtonText('Buscar');
+
 
     /* axios.post('/backend/main.py', searchParams)
       .then(response => {
@@ -73,7 +100,7 @@ export default function Home() {
         </div>
         <div className="col-md-2">
           <button className="btn btn-primary w-100" onClick={handleSearch}>
-            Buscar
+            {buttonText}
           </button>
         </div>
       </div>
@@ -166,26 +193,30 @@ export default function Home() {
           <thead className="table-light">
             <tr>
               <th>Empresa</th>
-              <th>Región</th>
+              <th>Titulo</th>
+              <th>Descripcion</th>
+              {/* <th>Región</th>
               <th>Ciudad/Comuna</th>
               <th>Nivel Educacional</th>
               <th>Años de Experiencia</th>
               <th>Jornada Laboral</th>
               <th>Salario</th>
-              <th>Nivel de Cargo</th>
+              <th>Nivel de Cargo</th> */}
             </tr>
           </thead>
           <tbody>
             {jobs.map((job, index) => (
               <tr key={index}>
                 <td>{job.empresa}</td>
-                <td>{job.region}</td>
+                <td>{job.titulo}</td>
+                <td>{job.descripcion}</td>
+                {/* <td>{job.region}</td>
                 <td>{job.comuna}</td>
                 <td>{job.nivelEducativo}</td>
                 <td>{job.experiencia}</td>
                 <td>{job.jornada}</td>
                 <td>{job.salario}</td>
-                <td>{job.cargo}</td>
+                <td>{job.cargo}</td> */}
               </tr>
             ))}
           </tbody>
