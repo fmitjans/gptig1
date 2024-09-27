@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import data from '../assets/regiones_comunas.json';
 
 export default function Home() {
+  const [searchKeyword, setSearchKeyword] = useState('');
   const [region, setRegion] = useState('');
   const [comuna, setComuna] = useState('');
   const [nivelEducativo, setNivelEducativo] = useState('');
@@ -23,23 +24,20 @@ export default function Home() {
   const [comunasPorRegion, setComunasPorRegion] = useState({});
   const [regiones, setRegiones] = useState([]);
 
-
-  const nivelesEducativos = ['Sin educación formal', 'Educación básica incompleta', 'Educación básica completa', 'Educación media incompleta', 'Educación media completa', 'Educación técnica incompleta', 'Educación técnica completa', 'Educación universitaria incompleta', 'Educación universitaria completa', 'Magíster', 'Doctorado'];
+  const nivelesEducativos = ['Sin educación formal', 'Educación básica incompleta', 'Educación básica completa', 
+    'Educación media incompleta', 'Educación media completa', 'Educación técnica incompleta', 'Educación técnica completa', 
+    'Educación universitaria incompleta', 'Educación universitaria completa', 'Magíster', 'Doctorado'];
   const jornadasLaborales = ['Full time', 'Part time'];
+  const fechasPublicacion = ['', 'Hoy', 'Ayer', 'Menor a 3 días', 'Menor a 1 semana', 'Menor a 15 días', 'Menor a 1 mes', 'Menor a 2 meses'];
 
   useEffect(() => {
     setComunasPorRegion(JSON.parse(JSON.stringify(data)));
     setRegiones(Object.keys(data));
   }, []);
 
-  const handleRegionChange = (e) => {
-    const selectedRegion = e.target.value;
-    setRegion(selectedRegion);
-    setComuna([]);
-  };
-
   const handleSearch = () => {
     const searchParams = {
+      searchKeyword,
       region,
       comuna,
       nivelEducativo,
@@ -47,19 +45,40 @@ export default function Home() {
       fechaPublicacion,
     };
 
-    axios.post('/backend/main.py', searchParams)
+    /* axios.post('/backend/main.py', searchParams)
       .then(response => {
         setJobs(response.data);
       })
       .catch(error => {
         console.error("There was an error fetching the data!", error);
-      });
+      }); */
+
+      console.log(searchParams);
   };
 
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">Jobsmatch</h1>
-      
+
+      {/* Search bar row */}
+      <div className="row mb-3">
+        <div className="col-md-10">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Profesión, empresa o palabra clave"
+            value={searchKeyword}
+            onChange={e => setSearchKeyword(e.target.value)}
+          />
+        </div>
+        <div className="col-md-2">
+          <button className="btn btn-primary w-100" onClick={handleSearch}>
+            Buscar
+          </button>
+        </div>
+      </div>
+
+      {/* Filters form */}
       <div className="row mb-3">
         <div className="col-md-4">
           <select
@@ -126,18 +145,19 @@ export default function Home() {
           </select>
         </div>
         <div className="col-md-4">
-          <input
-            type="date"
-            className="form-control"
+          <select
+            className="form-select"
             value={fechaPublicacion}
             onChange={e => setFechaPublicacion(e.target.value)}
-            placeholder="Fecha de publicación"
-          />
-        </div>
-        <div className="col-md-4 d-flex align-items-center">
-          <button className="btn btn-primary w-100" onClick={handleSearch}>
-            Buscar
-          </button>
+            aria-label="Select Fecha de publicación"
+          >
+            <option value="">Fecha de publicación</option>
+            {fechasPublicacion.slice(1).map((fecha, index) => (
+              <option key={index} value={fecha}>
+                {fecha}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
