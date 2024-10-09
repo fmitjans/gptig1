@@ -21,13 +21,18 @@ def get_offers(keyword):
         
     driver.get(url)
 
+    # Definir diccionarios para guardar resultados
     resultados = [dict() for i in range(5)]
+    # Campos para scrapping
     tags = ["datosEmpresaOferta", "tituloOferta", "descripcionOferta"]
     for tag in tags:
+        # Encontrar elementos con la clase tag
         elements = driver.find_elements(By.CLASS_NAME, tag)
+    
         n_elements = min(len(elements), 5)
         for i in range(n_elements):
             text = elements[i].get_attribute('textContent').strip()
+            # Texto de BNE viene con espacios en blanco
             text = text.split("     ")[0].strip()
             resultados[i][tag] = text
 
