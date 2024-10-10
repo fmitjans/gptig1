@@ -3,6 +3,8 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import data from '../assets/regiones_comunas.json';
 import logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
+import '../styles/App.css';
 
 
 export default function Home() {
@@ -93,7 +95,7 @@ export default function Home() {
           />
         </div>
         <div className="col-md-2">
-          <button className="btn btn-primary w-100" onClick={handleSearch} disabled={isLoading}>
+          <button className="btn btn-primary w-100" onClick={handleSearch} disabled={isLoading} style={ {backgroundColor: '#f9c360', color: '#3d2822', borderColor:'#784532' }}>
             {buttonText}
           </button>
         </div>
@@ -190,18 +192,22 @@ export default function Home() {
       ) : (
         <div className="table-responsive mt-4">
           <table className="table table-bordered text-center">
-            <thead className="table-light">
+            <thead className="table-light custom-table-header">
               <tr>
-                <th>Empresa</th>
                 <th>Titulo</th>
+                <th>Empresa</th>
                 <th>Descripcion</th>
               </tr>
             </thead>
             <tbody>
               {jobs.map((job, index) => (
                 <tr key={index}>
+                  <td>
+                    <Link to={`/job/${index}`} style={{ textDecoration: 'none', color: '#007bff' }}>
+                      {job.titulo}
+                    </Link>
+                  </td>
                   <td>{job.empresa}</td>
-                  <td>{job.titulo}</td>
                   <td>{job.descripcion}</td>
                 </tr>
               ))}

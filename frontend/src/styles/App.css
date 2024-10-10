@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.custom-table-header {
+  background-color: #ffff10 !important; /* Sobrescribe el estilo de Bootstrap */
+  color: rgb(194, 130, 2) !important; /* Cambia el color del texto */
+}
