@@ -4,10 +4,13 @@ import viteLogo from '/vite.svg'
 import './styles/App.css'
 import { BrowserRouter } from 'react-router-dom'
 import AppRoutes from './AppRoutes'
+import Navbar from './components/Navbar';
 
 function App() {
   return (
     <BrowserRouter>
+          {/* Navbar siempre visible */}
+          <Navbar />
       <AppRoutes />
     </BrowserRouter>
   )

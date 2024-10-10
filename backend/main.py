@@ -12,7 +12,7 @@ def get_offers(keyword):
     url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={keyword}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
 
 
-    usar_firefox = True
+    usar_firefox = False
     if usar_firefox:
         service = Service("/snap/bin/firefox.geckodriver")
         driver = webdriver.Firefox(service=service)
