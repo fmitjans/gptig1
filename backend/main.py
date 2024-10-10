@@ -8,11 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import json
 
-def get_offers(keyword):
+def get_offers(keyword, usar_firefox=True):
     url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={keyword}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
 
-
-    usar_firefox = True
     if usar_firefox:
         service = Service("/snap/bin/firefox.geckodriver")
         driver = webdriver.Firefox(service=service)
@@ -24,17 +22,26 @@ def get_offers(keyword):
     # Definir diccionarios para guardar resultados
     resultados = [dict() for i in range(5)]
     # Campos para scrapping
-    tags = ["datosEmpresaOferta", "tituloOferta", "descripcionOferta"]
-    for tag in tags:
-        # Encontrar elementos con la clase tag
-        elements = driver.find_elements(By.CLASS_NAME, tag)
+    tag_off = "row.margenVerticales.resultadoOfertas.noMargingLaterales.seccionOferta"
+    offers = driver.find_elements(By.CLASS_NAME, tag_off)
+    tags = ["datosEmpresaOferta", "tituloOferta", "descripcionOferta", "fechaOferta"]
     
-        n_elements = min(len(elements), 5)
-        for i in range(n_elements):
-            text = elements[i].get_attribute('textContent').strip()
+    n_offers = min(len(offers), 5)
+    resultados = [dict() for i in range(n_offers)]
+    for i in range(n_offers):
+        resultados[i]["index"] = i
+        for tag in tags:
+            # Encontrar elementos con la clase tag
+            element = offers[i].find_element(By.CLASS_NAME, tag)
+            text = element.get_attribute('textContent').strip()
             # Texto de BNE viene con espacios en blanco
-            text = text.split("     ")[0].strip()
-            resultados[i][tag] = text
+            resultados[i][tag] = text.split("     ")[0].strip()
+            if (tag == "tituloOferta"):
+                link = element.find_element(By.TAG_NAME, "a") #get_attribute('href')
+                resultados[i]['link'] = link.get_attribute('href')
+            elif (tag == "datosEmpresaOferta"):
+                resultados[i]['ubicacionOferta'] = text.split("     ")[-1].strip()
+
 
     resultados_json_str = json.dumps(resultados, indent=2, ensure_ascii= False)
     print(resultados_json_str)
@@ -42,3 +49,7 @@ def get_offers(keyword):
     driver.close()
 
     return resultados_json_str
+
+if __name__ == '__main__':
+    texto = 'profesor'
+    get_offers(texto, False)
