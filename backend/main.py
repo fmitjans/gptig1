@@ -8,14 +8,19 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import json
 
-def get_offers(keyword, usar_firefox=True):
-    url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={keyword}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
-
+def init_driver(usar_firefox=True):
     if usar_firefox:
         service = Service("/snap/bin/firefox.geckodriver")
         driver = webdriver.Firefox(service=service)
     else:
         driver = webdriver.Chrome()
+    
+    return driver
+
+def get_offers(keyword):
+    url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={keyword}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
+
+    driver = init_driver()
         
     driver.get(url)
 
@@ -49,6 +54,9 @@ def get_offers(keyword, usar_firefox=True):
     driver.close()
 
     return resultados_json_str
+
+def get_details():
+    pass
 
 if __name__ == '__main__':
     texto = 'profesor'
