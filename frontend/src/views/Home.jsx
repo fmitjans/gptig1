@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import data from '../assets/regiones_comunas.json';
+import logo from '../assets/logo.png';
+
 
 export default function Home() {
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -23,7 +25,7 @@ export default function Home() {
     titulo: 'Desarrollador Full Stack',
     descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
   }]);
-
+  const [isLoading, setIsLoading] = useState(false); // Estado de carga añadido
   const [comunasPorRegion, setComunasPorRegion] = useState({});
   const [regiones, setRegiones] = useState([]);
 
@@ -49,43 +51,35 @@ export default function Home() {
     };
 
     setButtonText('Buscando...');
-    // temporal, cambiar por axios
+    setIsLoading(true); // Iniciar el estado de carga al hacer la búsqueda
 
     fetch(`http://localhost:8000?keyword=${encodeURIComponent(searchKeyword)}`)
       .then(response => response.json())
       .then(data => {
-        // datosEmpresaOferta
-        // descripcionOferta
-        // tituloOferta
         const renamedJobs = data.map(job => ({
           empresa: job.datosEmpresaOferta,
           descripcion: job.descripcionOferta,
           titulo: job.tituloOferta
         }));
-        console.log(renamedJobs); // Print the greeting message
         setJobs(renamedJobs);
       })
       .catch(error => {
         console.error('Error:', error);
+      })
+      .finally(() => {
+        setIsLoading(false); // Terminar el estado de carga cuando la solicitud finalice
+        setButtonText('Buscar');
       });
 
-      setButtonText('Buscar');
-
-
-    /* axios.post('/backend/main.py', searchParams)
-      .then(response => {
-        setJobs(response.data);
-      })
-      .catch(error => {
-        console.error("There was an error fetching the data!", error);
-      }); */
-
-      console.log(searchParams);
+    console.log(searchParams);
   };
 
   return (
     <div className="container mt-5">
-      <h1 className="text-center mb-4">Jobsmatch</h1>
+      <h1 className="text-center mb-4">
+        <img src={logo} alt="Jobsmatch Logo" style={{ maxWidth: '700px', height: 'auto' }} />
+      </h1>
+
 
       {/* Search bar row */}
       <div className="row mb-3">
@@ -99,7 +93,7 @@ export default function Home() {
           />
         </div>
         <div className="col-md-2">
-          <button className="btn btn-primary w-100" onClick={handleSearch}>
+          <button className="btn btn-primary w-100" onClick={handleSearch} disabled={isLoading}>
             {buttonText}
           </button>
         </div>
@@ -188,40 +182,33 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="table-responsive mt-4">
-        <table className="table table-bordered text-center">
-          <thead className="table-light">
-            <tr>
-              <th>Empresa</th>
-              <th>Titulo</th>
-              <th>Descripcion</th>
-              {/* <th>Región</th>
-              <th>Ciudad/Comuna</th>
-              <th>Nivel Educacional</th>
-              <th>Años de Experiencia</th>
-              <th>Jornada Laboral</th>
-              <th>Salario</th>
-              <th>Nivel de Cargo</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {jobs.map((job, index) => (
-              <tr key={index}>
-                <td>{job.empresa}</td>
-                <td>{job.titulo}</td>
-                <td>{job.descripcion}</td>
-                {/* <td>{job.region}</td>
-                <td>{job.comuna}</td>
-                <td>{job.nivelEducativo}</td>
-                <td>{job.experiencia}</td>
-                <td>{job.jornada}</td>
-                <td>{job.salario}</td>
-                <td>{job.cargo}</td> */}
+      {/* Muestra el estado de carga */}
+      {isLoading ? (
+        <div className="text-center">
+          <p>Cargando resultados...</p>
+        </div>
+      ) : (
+        <div className="table-responsive mt-4">
+          <table className="table table-bordered text-center">
+            <thead className="table-light">
+              <tr>
+                <th>Empresa</th>
+                <th>Titulo</th>
+                <th>Descripcion</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {jobs.map((job, index) => (
+                <tr key={index}>
+                  <td>{job.empresa}</td>
+                  <td>{job.titulo}</td>
+                  <td>{job.descripcion}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
