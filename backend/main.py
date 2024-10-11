@@ -61,32 +61,32 @@ def get_details(offer_code, usar_firefox=True):
     driver.get(url)
 
     data = dict()
-    panels          = driver.find_elements(By.CLASS_NAME, 'panel-body')
-    contact         = panels[1].find_elements(By.CLASS_NAME, 'col-sm-12')
-    description     = panels[2].find_element(By.CLASS_NAME, 'col-sm-12')
-    others          = panels[2].find_elements(By.CLASS_NAME, 'col-sm-3')
-    level           = panels[3].find_element(By.CLASS_NAME, 'col-sm-8')
-    experience      = panels[3].find_element(By.CLASS_NAME, 'col-sm-4')
-    characteristics = panels[4].find_elements(By.CLASS_NAME, 'col-sm-6')
+    panels      = driver.find_elements(By.CLASS_NAME, 'panel-body')
+    contact     = panels[1].find_elements(By.CLASS_NAME, 'col-sm-12')
+    description = panels[2].find_element(By.CLASS_NAME, 'col-sm-12')
+    specs       = panels[2].find_elements(By.CLASS_NAME, 'col-sm-3')
+    level       = panels[3].find_element(By.CLASS_NAME, 'col-sm-8')
+    experience  = panels[3].find_element(By.CLASS_NAME, 'col-sm-4')
+    others      = panels[4].find_elements(By.CLASS_NAME, 'col-sm-6')
 
-    data['empresa']     = contact[0].get_attribute('textContent').strip()
-    data['actividad']   = contact[1].get_attribute('textContent').strip()
+    data['empresa']     = contact[0].get_attribute('textContent').split(sep=':')[-1].strip()
+    data['actividad']   = contact[1].get_attribute('textContent').split(sep=':')[-1].strip()
     data['descripcion'] = description.get_attribute('textContent').strip()
-    data['ubicacion']   = others[0].get_attribute('textContent').strip()
-    data['remuneracion']= others[1].get_attribute('textContent').strip()
-    data['jornada']     = others[2].get_attribute('textContent').strip()
-    data['nivel']       = level.get_attribute('textContent').strip()
-    data['experiencia'] = experience.get_attribute('textContent').strip()
-    data['contrato']    = characteristics[0].get_attribute('textContent').strip()
-    data['cargo']       = characteristics[1].get_attribute('textContent').strip()
-    data['origen']      = characteristics[2].get_attribute('textContent').strip()
-    data['practica']    = characteristics[3].get_attribute('textContent').strip()
+    data['ubicacion']   = specs[0].get_attribute('textContent').strip()
+    data['remuneracion']= specs[1].get_attribute('textContent').strip()
+    data['jornada']     = specs[2].get_attribute('textContent').strip()
+    data['nivel']       = level.get_attribute('textContent').split(sep=':')[-1].strip()
+    data['experiencia'] = experience.get_attribute('textContent').split(sep=':')[-1].strip()
+    data['contrato']    = others[0].get_attribute('textContent').split(sep=':')[-1].strip()
+    data['cargo']       = others[1].get_attribute('textContent').split(sep=':')[-1].strip()
+    data['origen']      = others[2].get_attribute('textContent').split(sep=':')[-1].strip()
+    data['practica']    = others[3].get_attribute('textContent').split(sep=':')[-1].strip()
+
     driver.close()
     return data
 
 if __name__ == '__main__':
-    codigo = '2024-090575'
+    codigo = '2024-083180'
     data = get_details(codigo, False)
     for i in data.items():
         print(i)
-    input()
