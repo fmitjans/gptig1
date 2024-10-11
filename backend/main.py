@@ -61,6 +61,7 @@ def get_details(offer_code, usar_firefox=True):
     driver.get(url)
 
     data = dict()
+    titulo      = driver.find_element(By.ID, 'nombreOferta')
     panels      = driver.find_elements(By.CLASS_NAME, 'panel-body')
     contact     = panels[1].find_elements(By.CLASS_NAME, 'col-sm-12')
     description = panels[2].find_element(By.CLASS_NAME, 'col-sm-12')
@@ -69,6 +70,8 @@ def get_details(offer_code, usar_firefox=True):
     experience  = panels[3].find_element(By.CLASS_NAME, 'col-sm-4')
     others      = panels[4].find_elements(By.CLASS_NAME, 'col-sm-6')
 
+    long_title      = titulo.get_attribute('textContent').strip()
+    data['titulo']  = ' '.join(long_title.split()[:7])
     data['empresa']     = contact[0].get_attribute('textContent').split(sep=':')[-1].strip()
     data['actividad']   = contact[1].get_attribute('textContent').split(sep=':')[-1].strip()
     data['descripcion'] = description.get_attribute('textContent').strip()

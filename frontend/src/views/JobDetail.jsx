@@ -37,10 +37,25 @@ export default function JobDetails() {
 };
 
   useEffect(() => {
-    loadDetails();
+    if (details.empresa === undefined) {
+      loadDetails();
+    }
   }, []);
 
-  const job = {
+  // data['empresa']
+  // data['actividad']
+  // data['descripcion']
+  // data['ubicacion']
+  // data['remuneracion']
+  // data['jornada'] 
+  // data['nivel']   
+  // data['experiencia']
+  // data['contrato']
+  // data['cargo']  
+  // data['origen'] 
+  // data['practica'] 
+
+  let job = {
     titulo: 'Desarrollador Full Stack',
     empresa: 'Tech Solutions',
     actividadEconomica: 'Servicios de desarrollo de software',
@@ -62,6 +77,30 @@ export default function JobDetails() {
       ofertaPractica: false
     }
   };
+
+  const processedDetails = {
+    titulo: details.titulo,
+    actividadEconomica: details.actividad,
+    descripcion: {
+      breve: details.descripcion,
+      ubicacion: details.ubicacion,
+      sueldo: details.remuneracion,
+      jornada: details.jornada,
+      fecha: details.fecha
+    },
+    requisitos: {
+      nivelEducacional: details.nivel,
+      experiencia: details.experiencia
+    },
+    caracteristicas: {
+      tipoContrato: details.contrato,
+      nivelCargo: details.cargo,
+      origenOferta: details.origen,
+      ofertaPractica: details.practica
+    }
+  }
+
+  job = {...job, ...processedDetails};
 
   if (isLoading) {
     return (
