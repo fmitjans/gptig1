@@ -11,11 +11,35 @@
 //    </div>
 //  );
 //}
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { FaBuilding, FaMapMarkerAlt, FaMoneyBillWave, FaClock, FaUserGraduate, FaClipboardCheck, FaBriefcase } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function JobDetails() {
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [details, setDetails] = useState({});
+
+  const { id } = useParams();
+
+  const loadDetails = () => {
+  fetch(`http://localhost:8000/details?offer_id=${id}`)
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    setDetails(data);
+  })
+  .catch(error => console.error('Error:', error))
+  .finally(() => {
+    setIsLoading(false);
+  });
+};
+
+  useEffect(() => {
+    loadDetails();
+  }, []);
+
   const job = {
     titulo: 'Desarrollador Full Stack',
     empresa: 'Tech Solutions',
@@ -39,6 +63,13 @@ export default function JobDetails() {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="container my-5 p-5">
+        <h1>Cargando...</h1>
+      </div>
+    );
+  } else {
   return (
     <div
       className="container my-5 p-5"
@@ -192,4 +223,5 @@ export default function JobDetails() {
       </div>
     </div>
   );
+}
 }

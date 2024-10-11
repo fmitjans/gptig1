@@ -55,8 +55,8 @@ def get_offers(keyword):
 
     return resultados_json_str
 
-def get_details():
-    pass
+def get_details(offer_id):
+    return {"test_key": "test value", "offer_id": offer_id}
 
 if __name__ == '__main__':
     texto = 'profesor'

@@ -55,15 +55,18 @@ export default function Home() {
     setButtonText('Buscando...');
     setIsLoading(true); // Iniciar el estado de carga al hacer la búsqueda
 
-    fetch(`http://localhost:8000?keyword=${encodeURIComponent(searchKeyword)}`)
+    fetch(`http://localhost:8000/offers?keyword=${encodeURIComponent(searchKeyword)}`)
       .then(response => response.json())
       .then(data => {
+        // console.log(data);
         const renamedJobs = data.map(job => ({
           empresa: job.datosEmpresaOferta,
           descripcion: job.descripcionOferta,
-          titulo: job.tituloOferta
+          titulo: job.tituloOferta,
+          offerId: job.link.slice(26) // corregir esto. mandar solo id desde el backend
         }));
         setJobs(renamedJobs);
+        console.log(renamedJobs);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -73,7 +76,6 @@ export default function Home() {
         setButtonText('Buscar');
       });
 
-    console.log(searchParams);
   };
 
   return (
@@ -203,7 +205,7 @@ export default function Home() {
               {jobs.map((job, index) => (
                 <tr key={index}>
                   <td>
-                    <Link to={`/job/${index}`} style={{ textDecoration: 'none', color: '#007bff' }}>
+                    <Link to={`/job/${job.offerId}`} style={{ textDecoration: 'none', color: '#007bff' }}>
                       {job.titulo}
                     </Link>
                   </td>
