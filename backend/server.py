@@ -2,22 +2,41 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import urllib.parse as urlparse
 import json
 
-from main import get_offers
+from main import get_offers, get_details
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        query_components = urlparse.parse_qs(urlparse.urlparse(self.path).query)
-        keyword = query_components.get("keyword", ["software"])[0]
+        parsed_path = urlparse.urlparse(self.path)
+        path = parsed_path.path
+        query_components = urlparse.parse_qs(parsed_path.query)
         
-        results_json = get_offers(keyword)
-        # response_data = {"message": f"Hello, {name}!"}
-        # response_json = json.dumps(response_data)
+        if path == "/offers":  # First kind of GET request
+            keyword = query_components.get("keyword", ["software"])[0]
+            results_json = get_offers(keyword)
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(results_json.encode('utf-8'))
         
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.send_header('Access-Control-Allow-Origin', '*')  # Allow requests from any origin
-        self.end_headers()
-        self.wfile.write(results_json.encode('utf-8'))
+        elif path == "/details":
+            offer_id = query_components.get("offer_id", ["0"])[0]
+            
+            details_dict = get_details(offer_id)
+            details_json = json.dumps(details_dict)
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(details_json.encode('utf-8'))
+        
+        else:
+            # Handle unknown paths
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(b'Not Found')
+
 
 def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=8000):
     server_address = ('', port)
