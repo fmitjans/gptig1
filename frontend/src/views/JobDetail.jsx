@@ -20,21 +20,24 @@ export default function JobDetails() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [details, setDetails] = useState({});
+  const [isEmailLoading, setIsEmailLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [hasGeneratedEmail, setHasGeneratedEmail] = useState(false);
 
   const { id } = useParams();
 
   const loadDetails = () => {
-  fetch(`http://localhost:8000/details?offer_id=${id}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    setDetails(data);
-  })
-  .catch(error => console.error('Error:', error))
-  .finally(() => {
-    setIsLoading(false);
-  });
-};
+    fetch(`http://localhost:8000/details?offer_id=${id}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      setDetails(data);
+    })
+    .catch(error => console.error('Error:', error))
+    .finally(() => {
+      setIsLoading(false);
+    });
+  };
 
   useEffect(() => {
     if (details.empresa === undefined) {
@@ -102,6 +105,25 @@ export default function JobDetails() {
 
   job = {...job, ...processedDetails};
 
+  const loadEmail = () => {
+    setIsEmailLoading(true);
+    fetch(`http://localhost:8000/email?offer_id=${id}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data)
+      setEmail(data.text);
+    })
+    .catch(error => console.error('Error:', error))
+    .finally(() => {
+      setIsEmailLoading(false);
+      setHasGeneratedEmail(true);
+    });
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
   if (isLoading) {
     return (
       <div className="container my-5 p-5">
@@ -110,6 +132,7 @@ export default function JobDetails() {
     );
   } else {
   return (
+    <>
     <div
       className="container my-5 p-5"
       style={{
@@ -260,7 +283,77 @@ export default function JobDetails() {
           </div>
         </div>
       </div>
+      
+      {/* Botón para generar email de postulación */}
+      <button
+        style={{
+          backgroundColor: '#3d2822',
+          padding: '20px',
+          borderRadius: '15px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          textAlign: 'center',
+          marginTop: '15px',
+          transition: 'transform 0.3s',
+          border: '2px solid #3d2822',
+          fontSize: '1.275rem',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+        onClick={loadEmail}
+        disabled={isEmailLoading}
+      >
+        <strong>{isEmailLoading ? 'Generando email ...' : 'Generar email de postulación'}</strong>
+      </button>
     </div>
+    
+    {/* Email generado */}
+    {(email || hasGeneratedEmail) && (
+      <div
+        className="container my-5 p-5"
+        style={{
+          backgroundColor: '#f9c360',
+          color: '#3d2822',
+          border: '2px solid #784532',
+          borderRadius: '20px',
+          maxWidth: '900px',
+          height: '600px',
+          boxShadow: '0 12px 20px rgba(0, 0, 0, 0.2)',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: '#3d2822',
+            color: '#f9c360',
+            padding: '20px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            marginBottom: '20px',
+          }}
+        >
+          <h3 style={{ fontWeight: 'bold' }}>
+            Email de postulación
+          </h3>
+        </div>
+        <textarea
+          value={email}
+          onChange={handleEmailChange}
+          style={{
+            padding: '10px',
+            width: '100%',
+            height: '80%',
+            maxHeight: '80%',
+            backgroundColor: '#fff',
+            color: '#000',
+            borderRadius: '10px',
+            border: '2px solid #784532',
+            outline: 'None',
+            fontSize: '1.1rem',
+          }}
+        />
+      </div>
+    )}
+
+  </>
   );
 }
 }

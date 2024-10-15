@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from time import sleep
 import urllib.parse as urlparse
 import json
 
@@ -30,6 +31,20 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(details_json.encode('utf-8'))
+        
+        elif path == "/email":
+            offer_id = query_components.get("offer_id", ["0"])[0]
+            
+            email_content = {"text": "This is an AI generated email"}
+            email_json = json.dumps(email_content)
+
+            sleep(1) # por mientras
+
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(email_json.encode('utf-8'))
         
         else:
             # Handle unknown paths
