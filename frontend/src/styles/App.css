@@ -45,3 +45,18 @@
   background-color: #ffff10 !important; /* Sobrescribe el estilo de Bootstrap */
   color: rgb(194, 130, 2) !important; /* Cambia el color del texto */
 }
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #f9c360;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spinner 1s linear infinite;
+  margin: 0 auto;
+}
