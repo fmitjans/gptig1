@@ -78,6 +78,13 @@ export default function Home() {
 
   };
 
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">
@@ -94,6 +101,7 @@ export default function Home() {
             placeholder="Profesión, empresa o palabra clave"
             value={searchKeyword}
             onChange={e => setSearchKeyword(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
         </div>
         <div className="col-md-2">
@@ -189,7 +197,9 @@ export default function Home() {
       {/* Muestra el estado de carga */}
       {isLoading ? (
         <div className="text-center">
+          <div className="spinner"></div>
           <p>Cargando resultados...</p>
+          
         </div>
       ) : (
         <div className="table-responsive mt-4">

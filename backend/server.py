@@ -3,7 +3,7 @@ from time import sleep
 import urllib.parse as urlparse
 import json
 
-from main import get_offers, get_details
+from main import get_offers, get_details, generar_correo_openai
 
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -31,20 +31,17 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
             self.wfile.write(details_json.encode('utf-8'))
-        
-        elif path == "/email":
-            offer_id = query_components.get("offer_id", ["0"])[0]
-            
-            email_content = {"text": "This is an AI generated email"}
-            email_json = json.dumps(email_content)
 
-            sleep(1) # por mientras
+        elif path == "/mail":
+            details_json = query_components.get("details_json", [0])[0]
+            details = json.loads(details_json)
+            generated_email = generar_correo_openai(details)
 
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.send_header('Access-Control-Allow-Origin', '*')
             self.end_headers()
-            self.wfile.write(email_json.encode('utf-8'))
+            self.wfile.write(json.dumps({"email": generated_email}).encode('utf-8'))     
         
         else:
             # Handle unknown paths
@@ -60,4 +57,9 @@ def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=80
     httpd.serve_forever()
 
 if __name__ == '__main__':
-    run()
+    codigo = '2024-083180'
+    data = get_details(codigo, False)
+    correo = generar_correo_openai(data)
+    print(correo)
+
+    #run()
