@@ -58,8 +58,7 @@ def run(server_class=HTTPServer, handler_class=SimpleHTTPRequestHandler, port=80
 
 if __name__ == '__main__':
     codigo = '2024-083180'
-    data = get_details(codigo, False)
-    correo = generar_correo_openai(data)
-    print(correo)
-
-    #run()
+    # data = get_details(codigo, False)
+    # correo = generar_correo_openai(data)
+    # print(correo)
+    run()

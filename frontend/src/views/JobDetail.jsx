@@ -105,13 +105,15 @@ export default function JobDetails() {
 
   job = {...job, ...processedDetails};
 
-  const loadEmail = () => {
+  const loadEmail = (details) => {
+    console.log(details);
+    let details_json = JSON.stringify(details);
     setIsEmailLoading(true);
-    fetch(`http://localhost:8000/email?offer_id=${id}`)
+    fetch(`http://localhost:8000/mail?details_json=${details_json}`)
     .then(response => response.json())
     .then(data => {
       console.log(data)
-      setEmail(data.text);
+      setEmail(data.email);
     })
     .catch(error => console.error('Error:', error))
     .finally(() => {
@@ -160,6 +162,74 @@ export default function JobDetails() {
         </h1>
       </div>
 
+            {/* Botón para generar email de postulación */}
+            <button
+        style={{
+          backgroundColor: '#3d2822',
+          padding: '20px',
+          borderRadius: '15px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          textAlign: 'center',
+          marginTop: '15px',
+          transition: 'transform 0.3s',
+          border: '2px solid #3d2822',
+          fontSize: '1.275rem',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+        onClick={() => loadEmail(job)}
+        disabled={isEmailLoading}
+      >
+        <strong>{isEmailLoading ? 'Generando email ...' : 'Generar email de postulación'}</strong>
+      </button>
+
+    {/* Email generado */}
+    {(email || hasGeneratedEmail) && (
+      <div
+        className="container my-5 p-5"
+        style={{
+          backgroundColor: '#f9c360',
+          color: '#3d2822',
+          border: '2px solid #784532',
+          borderRadius: '20px',
+          maxWidth: '900px',
+          height: '600px',
+          boxShadow: '0 12px 20px rgba(0, 0, 0, 0.2)',
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: '#3d2822',
+            color: '#f9c360',
+            padding: '20px',
+            borderRadius: '15px',
+            textAlign: 'center',
+            marginBottom: '20px',
+          }}
+        >
+          <h3 style={{ fontWeight: 'bold' }}>
+            Email de postulación
+          </h3>
+        </div>
+        <textarea
+          value={email}
+          onChange={handleEmailChange}
+          style={{
+            padding: '10px',
+            width: '100%',
+            height: '80%',
+            maxHeight: '80%',
+            backgroundColor: '#fff',
+            color: '#000',
+            borderRadius: '10px',
+            border: '2px solid #784532',
+            outline: 'None',
+            fontSize: '1.1rem',
+          }}
+        />
+      </div>
+    )}
+
       {/* Descripción larga del trabajo */}
       <div
         className="mb-4"
@@ -169,6 +239,7 @@ export default function JobDetails() {
           padding: '20px',
           border: '2px solid #784532',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          marginTop: '40px',
           marginBottom: '40px',
           color: '#3d2822',
         }}
@@ -283,75 +354,9 @@ export default function JobDetails() {
           </div>
         </div>
       </div>
-      
-      {/* Botón para generar email de postulación */}
-      <button
-        style={{
-          backgroundColor: '#3d2822',
-          padding: '20px',
-          borderRadius: '15px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          textAlign: 'center',
-          marginTop: '15px',
-          transition: 'transform 0.3s',
-          border: '2px solid #3d2822',
-          fontSize: '1.275rem',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-        onClick={loadEmail}
-        disabled={isEmailLoading}
-      >
-        <strong>{isEmailLoading ? 'Generando email ...' : 'Generar email de postulación'}</strong>
-      </button>
+
     </div>
     
-    {/* Email generado */}
-    {(email || hasGeneratedEmail) && (
-      <div
-        className="container my-5 p-5"
-        style={{
-          backgroundColor: '#f9c360',
-          color: '#3d2822',
-          border: '2px solid #784532',
-          borderRadius: '20px',
-          maxWidth: '900px',
-          height: '600px',
-          boxShadow: '0 12px 20px rgba(0, 0, 0, 0.2)',
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: '#3d2822',
-            color: '#f9c360',
-            padding: '20px',
-            borderRadius: '15px',
-            textAlign: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          <h3 style={{ fontWeight: 'bold' }}>
-            Email de postulación
-          </h3>
-        </div>
-        <textarea
-          value={email}
-          onChange={handleEmailChange}
-          style={{
-            padding: '10px',
-            width: '100%',
-            height: '80%',
-            maxHeight: '80%',
-            backgroundColor: '#fff',
-            color: '#000',
-            borderRadius: '10px',
-            border: '2px solid #784532',
-            outline: 'None',
-            fontSize: '1.1rem',
-          }}
-        />
-      </div>
-    )}
 
   </>
   );
