@@ -8,6 +8,15 @@ from selenium.webdriver.support import expected_conditions as EC
 
 import json
 
+import os
+from dotenv import load_dotenv
+
+import openai
+
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
 def init_driver(usar_firefox=True):
     if usar_firefox:
         service = Service("/snap/bin/firefox.geckodriver")
@@ -88,8 +97,37 @@ def get_details(offer_code, usar_firefox=True):
     driver.close()
     return data
 
+
+def generar_correo_openai(oferta):
+    prompt = f"""
+    Genera un correo formal para postularme a la siguiente oferta de trabajo:
+
+    - Empresa: {oferta['empresa']}
+    - Título del puesto: {oferta['titulo']}
+    - Descripción del puesto: {oferta['descripcion']}
+
+    Mi nombre es [mi nombre] y tengo experiencia relevante en este sector. Me gustaría expresar mi interés por el puesto y discutir cómo puedo contribuir a la empresa.
+
+    Por favor, utiliza un tono profesional y cortés.
+    """
+    
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Eres un asistente que genera correos formales."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+
+    # Obtener el texto generado
+    correo_generado = response['choices'][0]['message']['content'].strip()
+    return correo_generado
+
+
+
 if __name__ == '__main__':
     codigo = '2024-083180'
     data = get_details(codigo, False)
-    for i in data.items():
-        print(i)
+    print(data)
+    #for i in data.items():
+    #    print(i)
