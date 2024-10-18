@@ -128,8 +128,9 @@ export default function JobDetails() {
 
   if (isLoading) {
     return (
-      <div className="container my-5 p-5">
-        <h1>Cargando...</h1>
+      <div className="text-center">
+        <div className="spinner"></div>
+        <p>Cargando detalles...</p>
       </div>
     );
   } else {
@@ -162,26 +163,36 @@ export default function JobDetails() {
         </h1>
       </div>
 
-            {/* Botón para generar email de postulación */}
+      {/* Botón para generar email de postulación */}
+    {!(email || hasGeneratedEmail) && (
             <button
-        style={{
-          backgroundColor: '#3d2822',
-          padding: '20px',
-          borderRadius: '15px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          textAlign: 'center',
-          marginTop: '15px',
-          transition: 'transform 0.3s',
-          border: '2px solid #3d2822',
-          fontSize: '1.275rem',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
-        onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-        onClick={() => loadEmail(job)}
-        disabled={isEmailLoading}
-      >
-        <strong>{isEmailLoading ? 'Generando email ...' : 'Generar email de postulación'}</strong>
-      </button>
+            style={{
+              backgroundColor: '#3d2822',
+              padding: '20px',
+              borderRadius: '15px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              textAlign: 'center',
+              marginTop: '15px',
+              transition: 'transform 0.3s',
+              border: '2px solid #3d2822',
+              fontSize: '1.275rem',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+            onClick={() => loadEmail(job)}
+            disabled={isEmailLoading}
+          >
+            { isEmailLoading ?
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <strong style={{ marginRight: '20px' }}>{'Generando email'}</strong>
+              <div className="spinner"></div>
+            </div>
+            :
+            <strong>{'Generar email de postulación'}</strong>
+          }
+              
+          </button>
+    )}
 
     {/* Email generado */}
     {(email || hasGeneratedEmail) && (
@@ -193,7 +204,7 @@ export default function JobDetails() {
           border: '2px solid #784532',
           borderRadius: '20px',
           maxWidth: '900px',
-          height: '600px',
+          height: '500px',
           boxShadow: '0 12px 20px rgba(0, 0, 0, 0.2)',
         }}
       >
