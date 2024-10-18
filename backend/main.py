@@ -103,7 +103,14 @@ def generar_correo_openai(oferta):
     Genera un correo formal para postularme a la siguiente oferta de trabajo:
 
     - Empresa: {oferta['empresa']}
+    - Actividad economica de la empresa: {oferta['actividad']}
     - Título del puesto: {oferta['titulo']}
+    - Ubicación: {oferta['ubicacion']}
+    - Nivel del cargo ofrecido: {oferta['cargo']}
+    - Tipo de jornada: {oferta['jornada']}
+    - Nivel educacional requerido: {oferta['nivel']}
+    - Experiencia requerida: {oferta['nivel']}
+    - Tipo de contrato: {oferta['contrato']}
     - Descripción del puesto: {oferta['descripcion']}
 
     Mi nombre es [mi nombre] y tengo experiencia relevante en este sector. Me gustaría expresar mi interés por el puesto y discutir cómo puedo contribuir a la empresa.
@@ -128,6 +135,8 @@ def generar_correo_openai(oferta):
 if __name__ == '__main__':
     codigo = '2024-083180'
     data = get_details(codigo, False)
-    print(data)
+    correo = generar_correo_openai(data)
+    print(data, '\n\n')
+    print(correo)
     #for i in data.items():
     #    print(i)
