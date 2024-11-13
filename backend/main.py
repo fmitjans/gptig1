@@ -64,7 +64,7 @@ def get_offers(keyword):
 
     return resultados_json_str
 
-def get_details(offer_code, usar_firefox=True):
+def get_details(offer_code, usar_firefox=False):
     url = f"https://www.bne.cl/oferta/{offer_code}"
     driver = init_driver(usar_firefox)    
     driver.get(url)
@@ -100,21 +100,25 @@ def get_details(offer_code, usar_firefox=True):
 
 def generar_correo_openai(oferta):
     prompt = f"""
-    Genera un correo formal para postularme a la siguiente oferta de trabajo:
+    Genera un correo formal siguiendo el formato AIDA para postularme a la siguiente oferta de trabajo:
 
     - Empresa: {oferta['empresa']}
     - Título del puesto: {oferta['titulo']}
     - Descripción del puesto: {oferta['descripcion']}
 
-    Mi nombre es [mi nombre] y tengo experiencia relevante en este sector. Me gustaría expresar mi interés por el puesto y discutir cómo puedo contribuir a la empresa.
+    Estructura del correo (AIDA):
+    1. **Atención**: Captura la atención del reclutador de forma atractiva.
+    2. **Interés**: Desarrolla el interés destacando cómo mis habilidades y experiencia se alinean con la oferta de trabajo.
+    3. **Deseo**: Genera deseo mostrando cómo mi contribución puede beneficiar a la empresa.
+    4. **Acción**: Termina con una llamada a la acción, como expresar mi disposición para una entrevista.
 
-    Por favor, utiliza un tono profesional y cortés.
+    Mi nombre es [mi nombre] y tengo experiencia relevante en este sector. Por favor, utiliza un tono profesional y cortés, y sigue la estructura AIDA al escribir el correo.
     """
     
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Eres un asistente que genera correos formales."},
+            {"role": "system", "content": "Eres un asistente que genera correos formales siguiendo la estructura AIDA."},
             {"role": "user", "content": prompt}
         ]
     )

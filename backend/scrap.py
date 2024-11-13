@@ -21,12 +21,12 @@ class Driver:
         sleep(5)
 
     def click_element(self, by: str, xpath: str) -> None:
-        sleep(1)
+        sleep(2)
         element = self.driver.find_element(by=by, value=xpath)
         element.click()
 
     def write_element(self, by: str, xpath: str, content: str):
-        sleep(1)
+        sleep(2)
         self.driver.find_element(by=by, value=xpath).send_keys(content)
 
     def find_element(self, by: str, xpath: str) -> WebElement:
