@@ -160,7 +160,7 @@ export default function JobDetails() {
           marginBottom: '20px',
         }}
       >
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#FFFFFF' }}>
           {job.titulo}
         </h1>
       </div>
@@ -221,7 +221,7 @@ export default function JobDetails() {
             marginBottom: '20px',
           }}
         >
-          <h3 style={{ fontWeight: 'bold' }}>
+          <h3 style={{ fontWeight: 'bold', color: '#FFFFFF' }}>
             Email de postulación
           </h3>
         </div>
@@ -255,7 +255,7 @@ export default function JobDetails() {
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           marginTop: '40px',
           marginBottom: '40px',
-          color: '#3d2822',
+          color: '#000000',
         }}
       >
         <h4 style={{ fontWeight: 'bold', marginBottom: '15px', color: '#000' }}>Descripción</h4>
