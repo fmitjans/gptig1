@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import data from '../assets/regiones_comunas.json';
-import logo from '../assets/logo.png';
+import logo2 from '../assets/imagenmejorada2.png';
 import { Link } from 'react-router-dom';
 import '../styles/App.css';
 
@@ -88,10 +88,8 @@ export default function Home() {
   return (
     <div className="container mt-5">
       <h1 className="text-center mb-4">
-        <img src={logo} alt="Jobsmatch Logo" style={{ maxWidth: '700px', height: 'auto' }} />
+        <img src={logo2} alt="Jobsmatch Logo" style={{ maxWidth: '600px', height: 'auto' }} />
       </h1>
-
-
       {/* Search bar row */}
       <div className="row mb-3">
         <div className="col-md-10">
@@ -105,7 +103,7 @@ export default function Home() {
           />
         </div>
         <div className="col-md-2">
-          <button className="btn btn-primary w-100" onClick={handleSearch} disabled={isLoading} style={ {backgroundColor: '#f9c360', color: '#3d2822', borderColor:'#784532' }}>
+          <button className="custom-button" onClick={handleSearch} disabled={isLoading}>
             {buttonText}
           </button>
         </div>

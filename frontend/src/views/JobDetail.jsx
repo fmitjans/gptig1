@@ -136,24 +136,26 @@ export default function JobDetails() {
   } else {
   return (
     <>
+  {/* clasificado 1: #E3EDF2*/}
     <div
+  
       className="container my-5 p-5"
       style={{
-        backgroundColor: '#f9c360',
-        color: '#3d2822',
-        border: '2px solid #784532',
-        borderRadius: '20px',
+        backgroundColor: '#E3EDF2',
+        color: '#000', // Acá se puede cambiar el color de la letra
+        border: '0px solid #000000',
+        borderRadius: '5px',
         maxWidth: '900px',
-        boxShadow: '0 12px 20px rgba(0, 0, 0, 0.2)',
+        boxShadow: '0 12px 20px rgba(0, 0, 0, 0.5)',
       }}
     >
       {/* Título del trabajo */}
       <div
         style={{
-          backgroundColor: '#3d2822',
+          backgroundColor: '#0061b6',
           color: '#f9c360',
           padding: '20px',
-          borderRadius: '15px',
+          borderRadius: '7px',
           textAlign: 'center',
           marginBottom: '20px',
         }}
@@ -167,14 +169,15 @@ export default function JobDetails() {
     {!(email || hasGeneratedEmail) && (
             <button
             style={{
-              backgroundColor: '#3d2822',
+              backgroundColor: '#0061b6',
+              color: '#E3EDF2',
               padding: '20px',
-              borderRadius: '15px',
+              borderRadius: '7px',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               textAlign: 'center',
               marginTop: '15px',
               transition: 'transform 0.3s',
-              border: '2px solid #3d2822',
+              border: '2px solid #000000',
               fontSize: '1.275rem',
             }}
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
@@ -185,7 +188,7 @@ export default function JobDetails() {
             { isEmailLoading ?
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <strong style={{ marginRight: '20px' }}>{'Generando email'}</strong>
-              <div className="spinner"></div>
+              <div className="spinner2"></div>
             </div>
             :
             <strong>{'Generar email de postulación'}</strong>
@@ -199,19 +202,19 @@ export default function JobDetails() {
       <div
         className="container my-5 p-5"
         style={{
-          backgroundColor: '#f9c360',
-          color: '#3d2822',
-          border: '2px solid #784532',
-          borderRadius: '20px',
+          backgroundColor: '#E3EDF2',
+          color: '#000',
+          border: '0px solid ',
+          borderRadius: '15px',
           maxWidth: '900px',
           height: '500px',
-          boxShadow: '0 12px 20px rgba(0, 0, 0, 0.2)',
+          boxShadow: '0 12px 20px rgba(0, 0, 0, 0)',
         }}
       >
         <div
           style={{
-            backgroundColor: '#3d2822',
-            color: '#f9c360',
+            backgroundColor: '#0061b6',
+            color: '#000',
             padding: '20px',
             borderRadius: '15px',
             textAlign: 'center',
@@ -233,7 +236,7 @@ export default function JobDetails() {
             backgroundColor: '#fff',
             color: '#000',
             borderRadius: '10px',
-            border: '2px solid #784532',
+            border: '2px solid #fff',
             outline: 'None',
             fontSize: '1.1rem',
           }}
@@ -248,14 +251,14 @@ export default function JobDetails() {
           backgroundColor: '#fff',
           borderRadius: '10px',
           padding: '20px',
-          border: '2px solid #784532',
+          border: '2px solid #fff',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           marginTop: '40px',
           marginBottom: '40px',
           color: '#3d2822',
         }}
       >
-        <h4 style={{ fontWeight: 'bold', marginBottom: '15px' }}>Descripción</h4>
+        <h4 style={{ fontWeight: 'bold', marginBottom: '15px', color: '#000' }}>Descripción</h4>
         <p style={{ lineHeight: '1.6', fontSize: '1.1rem' }}>
           {job.descripcion.breve}
         </p>
@@ -270,7 +273,7 @@ export default function JobDetails() {
             style={{
               backgroundColor: '#fff',
               borderRadius: '15px',
-              border: '2px solid #784532',
+              border: '2px solid #fff',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               height: '100%',
               transition: 'transform 0.3s',
@@ -278,7 +281,7 @@ export default function JobDetails() {
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            <h4 style={{ color: '#3d2822', fontWeight: 'bold', marginBottom: '20px' }}>
+            <h4 style={{ color: '#3d2822', fontWeight: 'bold', marginBottom: '20px',  color: '#000'  }}>
               <FaBuilding style={{ marginRight: '10px' }} />
               Empresa y Contacto
             </h4>
@@ -294,7 +297,7 @@ export default function JobDetails() {
             style={{
               backgroundColor: '#fff',
               borderRadius: '15px',
-              border: '2px solid #784532',
+              border: '2px solid #fff',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               height: '100%',
               transition: 'transform 0.3s',
@@ -302,7 +305,7 @@ export default function JobDetails() {
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            <h4 style={{ color: '#3d2822', fontWeight: 'bold', marginBottom: '20px' }}>
+            <h4 style={{fontWeight: 'bold', marginBottom: '20px',  color: '#000'  }}>
               <FaClipboardCheck style={{ marginRight: '10px' }} />
               Detalles importantes
             </h4>
@@ -322,7 +325,7 @@ export default function JobDetails() {
             style={{
               backgroundColor: '#fff',
               borderRadius: '15px',
-              border: '2px solid #784532',
+              border: '2px solid #fff',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               height: '100%',
               transition: 'transform 0.3s',
@@ -330,7 +333,7 @@ export default function JobDetails() {
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            <h4 style={{ color: '#3d2822', fontWeight: 'bold', marginBottom: '20px' }}>
+            <h4 style={{fontWeight: 'bold', marginBottom: '20px',  color: '#000'  }}>
               <FaUserGraduate style={{ marginRight: '10px' }} />
               Requisitos
             </h4>
@@ -346,7 +349,7 @@ export default function JobDetails() {
             style={{
               backgroundColor: '#fff',
               borderRadius: '15px',
-              border: '2px solid #784532',
+              border: '2px solid #fff',
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
               height: '100%',
               transition: 'transform 0.3s',
@@ -354,7 +357,7 @@ export default function JobDetails() {
             onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
             onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
           >
-            <h4 style={{ color: '#3d2822', fontWeight: 'bold', marginBottom: '20px' }}>
+            <h4 style={{fontWeight: 'bold', marginBottom: '20px',  color: '#000'  }}>
               <FaBriefcase style={{ marginRight: '10px' }} />
               Características
             </h4>
