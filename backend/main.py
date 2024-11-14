@@ -13,18 +13,19 @@ import os
 from dotenv import load_dotenv
 
 import openai
+import parameters as p
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def init_driver(usar_firefox=True):
-    if usar_firefox:
+def init_driver():
+    if p.USING_FIREFOX:
         options = FirefoxOptions()
         options.headless = True
         options.add_argument("--headless") 
         options.add_argument("--no-sandbox") 
-        service = Service("/usr/local/bin/geckodriver")
+        service = Service(p.GECKODRIVER_LOCATION)
         driver = webdriver.Firefox(service=service, options=options)
     else:
         driver = webdriver.Chrome()
@@ -73,9 +74,9 @@ def get_offers(keyword):
 
     return resultados_json_str
 
-def get_details(offer_code, usar_firefox=True):
+def get_details(offer_code):
     url = f"https://www.bne.cl/oferta/{offer_code}"
-    driver = init_driver(usar_firefox)    
+    driver = init_driver()    
     driver.get(url)
 
     WebDriverWait(driver, 10).until(
@@ -144,7 +145,7 @@ def generar_correo_openai(oferta):
 
 if __name__ == '__main__':
     codigo = '2024-083180'
-    data = get_details(codigo, False)
+    data = get_details(codigo)
     print(data)
     #for i in data.items():
     #    print(i)
