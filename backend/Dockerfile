@@ -33,13 +33,13 @@ RUN GECKODRIVER_VERSION=0.29.1 \
     && rm geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz
 
 # Crear y activar el entorno virtual para Python
-WORKDIR .
+WORKDIR /backend
 COPY . .
-RUN python3 -m venv /venv
-RUN /venv/bin/pip install --no-cache-dir -r requirements.txt
+RUN python3 -m venv /backend/venv
+RUN /backend/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Exponer el puerto
 EXPOSE 8000
 
 # Comando para ejecutar la app dentro del entorno virtual
-CMD ["/venv/bin/python", "server.py"]
+CMD ["/backend/venv/bin/python", "server.py"]
