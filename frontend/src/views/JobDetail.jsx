@@ -27,7 +27,8 @@ export default function JobDetails() {
   const { id } = useParams();
 
   const loadDetails = () => {
-    fetch(`http://localhost:8000/details?offer_id=${id}`)
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    fetch(`${backendUrl}/details?offer_id=${id}`)
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -109,7 +110,7 @@ export default function JobDetails() {
     console.log(details);
     let details_json = JSON.stringify(details);
     setIsEmailLoading(true);
-    fetch(`http://localhost:8000/mail?details_json=${details_json}`)
+    fetch(`${backendUrl}/mail?details_json=${details_json}`)
     .then(response => response.json())
     .then(data => {
       console.log(data)
