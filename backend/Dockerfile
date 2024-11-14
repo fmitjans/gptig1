@@ -24,8 +24,8 @@ RUN apt-get update && apt-get install -y \
     firefox-esr \
     && apt-get clean
 
-# Descargar e instalar Geckodriver
-RUN curl -sS https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz -o /tmp/geckodriver.tar.gz && \
+# Descargar e instalar Geckodriver con una versión más confiable
+RUN curl -sS https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz -o /tmp/geckodriver.tar.gz && \
     tar -xvzf /tmp/geckodriver.tar.gz -C /usr/local/bin && \
     chmod +x /usr/local/bin/geckodriver && \
     rm /tmp/geckodriver.tar.gz
