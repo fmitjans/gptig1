@@ -38,6 +38,10 @@ def get_offers(keyword):
         
     driver.get(url)
 
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "row.margenVerticales.resultadoOfertas.noMargingLaterales.seccionOferta"))
+    )
+
     # Definir diccionarios para guardar resultados
     resultados = [dict() for i in range(5)]
     # Campos para scrapping
@@ -73,6 +77,10 @@ def get_details(offer_code, usar_firefox=True):
     url = f"https://www.bne.cl/oferta/{offer_code}"
     driver = init_driver(usar_firefox)    
     driver.get(url)
+
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'nombreOferta'))
+    )
 
     data = dict()
     titulo      = driver.find_element(By.ID, 'nombreOferta')
