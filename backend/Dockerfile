@@ -52,8 +52,8 @@ RUN apt-get update && apt-get install -y firefox-esr && \
 WORKDIR /backend
 COPY . .
 RUN python3 -m venv /app/venv
-RUN /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+RUN /backend/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 
-CMD ["/app/venv/bin/python", "server.py"]
+CMD ["/backend/venv/bin/python", "server.py"]
