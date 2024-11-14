@@ -1,7 +1,6 @@
-# Imagen de python
 FROM python:3.11-slim
 
-# Dependencias de Chromium y Firefox
+# Instalar dependencias para Google Chrome y Firefox
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -22,25 +21,26 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libgbm1 \
     libasound2 \
+    libappindicator3-1 \
+    libcurl4 \
+    libxss1 \
+    libxtst6 \
+    libvulkan1 \
     && apt-get clean
 
-
-# Google Chrome
+# Instalar Google Chrome
 RUN curl -sS https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome.deb && \
-    dpkg -i google-chrome.deb && \
-    apt-get -f install -y && \
+    dpkg -i google-chrome.deb || apt-get -f install -y && \
     rm google-chrome.deb
 
-
-# Chromedriver
+# Descargar e instalar Chromedriver
 RUN CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
     wget -q "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
     unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
     chmod +x /usr/local/bin/chromedriver && \
     rm /tmp/chromedriver.zip
 
-
-# Firefox y Geckodriver
+# Instalar Firefox y Geckodriver
 RUN apt-get update && apt-get install -y firefox-esr && \
     curl -sS https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz -o /tmp/geckodriver.tar.gz && \
     tar -xvzf /tmp/geckodriver.tar.gz -C /usr/local/bin && \
@@ -48,7 +48,6 @@ RUN apt-get update && apt-get install -y firefox-esr && \
     rm /tmp/geckodriver.tar.gz
 
 
-# Dependencias de Python
 WORKDIR /backend
 COPY . .
 RUN python3 -m venv /app/venv
