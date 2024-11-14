@@ -1,0 +1,1 @@
+USING_FIREFOX = False # C para chrome, F para Firefox
