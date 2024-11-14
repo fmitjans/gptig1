@@ -110,6 +110,7 @@ export default function JobDetails() {
     console.log(details);
     let details_json = JSON.stringify(details);
     setIsEmailLoading(true);
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
     fetch(`${backendUrl}/mail?details_json=${details_json}`)
     .then(response => response.json())
     .then(data => {
