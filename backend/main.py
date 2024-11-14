@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -19,8 +20,12 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def init_driver(usar_firefox=True):
     if usar_firefox:
+        options = FirefoxOptions()
+        options.headless = True
+        options.add_argument("--headless") 
+        options.add_argument("--no-sandbox") 
         service = Service("/usr/local/bin/geckodriver")
-        driver = webdriver.Firefox(service=service)
+        driver = webdriver.Firefox(service=service, options=options)
     else:
         driver = webdriver.Chrome()
     

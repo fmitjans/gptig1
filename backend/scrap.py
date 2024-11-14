@@ -18,15 +18,15 @@ class Driver:
 
     def load_page(self, page: str) -> None:
         self.driver.get(page)
-        sleep(5)
+        sleep(10)
 
     def click_element(self, by: str, xpath: str) -> None:
-        sleep(2)
+        sleep(10)
         element = self.driver.find_element(by=by, value=xpath)
         element.click()
 
     def write_element(self, by: str, xpath: str, content: str):
-        sleep(2)
+        sleep(10)
         self.driver.find_element(by=by, value=xpath).send_keys(content)
 
     def find_element(self, by: str, xpath: str) -> WebElement:
@@ -34,7 +34,7 @@ class Driver:
     
     def scroll_to_element(self, element):
         self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
-        sleep(5)
+        sleep(10)
 
     def close(self) -> None:
         self.driver.quit()
