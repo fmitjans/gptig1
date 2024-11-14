@@ -29,6 +29,7 @@ RUN GECKODRIVER_VERSION=0.29.1 \
     && wget https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz \
     && tar -xvzf geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz \
     && mv geckodriver /usr/local/bin/ \
+    && chmod +x /usr/local/bin/geckodriver \
     && rm geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz
 
 # Crear y activar el entorno virtual para Python

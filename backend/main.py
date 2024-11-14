@@ -19,7 +19,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def init_driver(usar_firefox=True):
     if usar_firefox:
-        service = Service("/snap/bin/firefox.geckodriver")
+        service = Service("/usr/local/bin/geckodriver")
         driver = webdriver.Firefox(service=service)
     else:
         driver = webdriver.Chrome()
