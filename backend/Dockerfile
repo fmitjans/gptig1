@@ -22,8 +22,14 @@ RUN apt-get update && apt-get install -y \
     libgbm1 \
     libasound2 \
     firefox-esr \
-    geckodriver \
     && apt-get clean
+
+# Descargar e instalar Geckodriver manualmente
+RUN GECKODRIVER_VERSION=0.29.1 \
+    && wget https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz \
+    && tar -xvzf geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz \
+    && mv geckodriver /usr/local/bin/ \
+    && rm geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz
 
 # Crear y activar el entorno virtual para Python
 WORKDIR /backend
