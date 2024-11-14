@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Instalar dependencias para Google Chrome y Firefox
+# Instalar dependencias para Firefox y Geckodriver
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -21,38 +21,23 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libgbm1 \
     libasound2 \
-    libappindicator3-1 \
-    libcurl4 \
-    libxss1 \
-    libxtst6 \
-    libvulkan1 \
+    firefox-esr \
     && apt-get clean
 
-# Instalar Google Chrome
-RUN curl -sS https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o google-chrome.deb && \
-    dpkg -i google-chrome.deb || apt-get -f install -y && \
-    rm google-chrome.deb
-
-# Descargar e instalar Chromedriver
-RUN CHROMEDRIVER_VERSION=$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
-    wget -q "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O /tmp/chromedriver.zip && \
-    unzip /tmp/chromedriver.zip -d /usr/local/bin/ && \
-    chmod +x /usr/local/bin/chromedriver && \
-    rm /tmp/chromedriver.zip
-
-# Instalar Firefox y Geckodriver
-RUN apt-get update && apt-get install -y firefox-esr && \
-    curl -sS https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz -o /tmp/geckodriver.tar.gz && \
+# Descargar e instalar Geckodriver
+RUN curl -sS https://github.com/mozilla/geckodriver/releases/download/v0.31.0/geckodriver-v0.31.0-linux64.tar.gz -o /tmp/geckodriver.tar.gz && \
     tar -xvzf /tmp/geckodriver.tar.gz -C /usr/local/bin && \
     chmod +x /usr/local/bin/geckodriver && \
     rm /tmp/geckodriver.tar.gz
 
-
-WORKDIR /backend
+# Crear y activar el entorno virtual para Python
+WORKDIR /app
 COPY . .
 RUN python3 -m venv /app/venv
-RUN /backend/venv/bin/pip install --no-cache-dir -r requirements.txt
+RUN /app/venv/bin/pip install --no-cache-dir -r requirements.txt
 
+# Exponer el puerto
 EXPOSE 8000
 
-CMD ["/backend/venv/bin/python", "server.py"]
+# Comando para ejecutar la app dentro del entorno virtual
+CMD ["/app/venv/bin/python", "server.py"]

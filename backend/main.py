@@ -17,7 +17,7 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def init_driver(usar_firefox=False):
+def init_driver(usar_firefox=True):
     if usar_firefox:
         service = Service("/snap/bin/firefox.geckodriver")
         driver = webdriver.Firefox(service=service)
@@ -64,7 +64,7 @@ def get_offers(keyword):
 
     return resultados_json_str
 
-def get_details(offer_code, usar_firefox=False):
+def get_details(offer_code, usar_firefox=True):
     url = f"https://www.bne.cl/oferta/{offer_code}"
     driver = init_driver(usar_firefox)    
     driver.get(url)
