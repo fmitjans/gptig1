@@ -33,7 +33,7 @@ RUN GECKODRIVER_VERSION=0.29.1 \
     && rm geckodriver-v$GECKODRIVER_VERSION-linux64.tar.gz
 
 # Crear y activar el entorno virtual para Python
-WORKDIR /backend
+WORKDIR .
 COPY . .
 RUN python3 -m venv /venv
 RUN /venv/bin/pip install --no-cache-dir -r requirements.txt
