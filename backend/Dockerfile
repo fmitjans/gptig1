@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-# Instalar dependencias para Firefox y Geckodriver
+# Instalar dependencias necesarias para Firefox y Geckodriver
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -24,20 +24,21 @@ RUN apt-get update && apt-get install -y \
     firefox-esr \
     && apt-get clean
 
-# Descargar e instalar Geckodriver con una versión más confiable
-RUN curl -sS https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz -o /tmp/geckodriver.tar.gz && \
+# Descargar e instalar Geckodriver con verificación del tamaño del archivo
+RUN curl -sS https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz -o /tmp/geckodriver.tar.gz && \
+    ls -lh /tmp/geckodriver.tar.gz && \
     tar -xvzf /tmp/geckodriver.tar.gz -C /usr/local/bin && \
     chmod +x /usr/local/bin/geckodriver && \
     rm /tmp/geckodriver.tar.gz
 
 # Crear y activar el entorno virtual para Python
-WORKDIR /app
+WORKDIR /backend
 COPY . .
-RUN python3 -m venv /app/venv
-RUN /app/venv/bin/pip install --no-cache-dir -r requirements.txt
+RUN python3 -m venv /backend/venv
+RUN /backend/venv/bin/pip install --no-cache-dir -r requirements.txt
 
 # Exponer el puerto
 EXPOSE 8000
 
 # Comando para ejecutar la app dentro del entorno virtual
-CMD ["/app/venv/bin/python", "server.py"]
+CMD ["/backend/venv/bin/python", "server.py"]
