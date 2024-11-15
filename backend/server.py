@@ -33,15 +33,21 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             self.wfile.write(details_json.encode('utf-8'))
 
         elif path == "/mail":
-            details_json = query_components.get("details_json", [0])[0]
-            details = json.loads(details_json)
-            generated_email = generar_correo_openai(details)
-
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.send_header('Access-Control-Allow-Origin', '*')
-            self.end_headers()
-            self.wfile.write(json.dumps({"email": generated_email}).encode('utf-8'))     
+            try:
+                details_json = query_components.get("details_json", [0])[0]
+                details = json.loads(details_json)
+                generated_email = generar_correo_openai(details)
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"email": generated_email}).encode('utf-8'))   
+            except json.JSONDecodeError as e:
+                self.send_response(400)
+                self.send_header('Content-type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": "Invalid JSON", "message": str(e)}).encode('utf-8'))   
         
         else:
             # Handle unknown paths
