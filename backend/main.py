@@ -32,7 +32,7 @@ def init_driver():
     
     return driver
 
-def get_offers(keyword):
+def get_offers(search_params):
     search_params = json.loads(search_params)
     # Verificar el contenido
     print("search_params después de cargar JSON:")

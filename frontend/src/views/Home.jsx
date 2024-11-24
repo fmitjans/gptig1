@@ -57,7 +57,7 @@ export default function Home() {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    fetch(`${backendUrl}/offers?keyword=${encodeURIComponent(searchKeyword)}`)
+    fetch(`${backendUrl}/offers?keyword=${encodeURIComponent(JSON.stringify(searchParams))}`)
       .then(response => response.json())
       .then(data => {
         // console.log(data);
