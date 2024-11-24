@@ -55,7 +55,9 @@ export default function Home() {
     setButtonText('Buscando...');
     setIsLoading(true); // Iniciar el estado de carga al hacer la búsqueda
 
-    fetch(`http://localhost:8000/offers?keyword=${encodeURIComponent(JSON.stringify(searchParams))}`)
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+    fetch(`${backendUrl}/offers?keyword=${encodeURIComponent(searchKeyword)}`)
       .then(response => response.json())
       .then(data => {
         // console.log(data);

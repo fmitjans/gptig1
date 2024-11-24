@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -20,14 +21,18 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def init_driver():
     if p.USING_FIREFOX:
-        service = Service("/snap/bin/firefox.geckodriver")
-        driver = webdriver.Firefox(service=service)
+        options = FirefoxOptions()
+        options.headless = True
+        options.add_argument("--headless") 
+        options.add_argument("--no-sandbox") 
+        service = Service(p.GECKODRIVER_LOCATION)
+        driver = webdriver.Firefox(service=service, options=options)
     else:
         driver = webdriver.Chrome()
     
     return driver
 
-def get_offers(search_params):
+def get_offers(keyword):
     search_params = json.loads(search_params)
     # Verificar el contenido
     print("search_params después de cargar JSON:")
@@ -37,6 +42,10 @@ def get_offers(search_params):
     driver = init_driver()
         
     driver.get(url)
+
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "row.margenVerticales.resultadoOfertas.noMargingLaterales.seccionOferta"))
+    )
 
     # Definir diccionarios para guardar resultados
     resultados = [dict() for i in range(5)]
@@ -74,6 +83,10 @@ def get_details(offer_code):
     driver = init_driver()    
     driver.get(url)
 
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, 'nombreOferta'))
+    )
+
     data = dict()
     titulo      = driver.find_element(By.ID, 'nombreOferta')
     panels      = driver.find_elements(By.CLASS_NAME, 'panel-body')
@@ -105,21 +118,25 @@ def get_details(offer_code):
 
 def generar_correo_openai(oferta):
     prompt = f"""
-    Genera un correo formal para postularme a la siguiente oferta de trabajo:
+    Genera un correo formal siguiendo el formato AIDA para postularme a la siguiente oferta de trabajo:
 
     - Empresa: {oferta['empresa']}
     - Título del puesto: {oferta['titulo']}
     - Descripción del puesto: {oferta['descripcion']}
 
-    Mi nombre es [mi nombre] y tengo experiencia relevante en este sector. Me gustaría expresar mi interés por el puesto y discutir cómo puedo contribuir a la empresa.
+    Estructura del correo (AIDA):
+    1. **Atención**: Captura la atención del reclutador de forma atractiva.
+    2. **Interés**: Desarrolla el interés destacando cómo mis habilidades y experiencia se alinean con la oferta de trabajo.
+    3. **Deseo**: Genera deseo mostrando cómo mi contribución puede beneficiar a la empresa.
+    4. **Acción**: Termina con una llamada a la acción, como expresar mi disposición para una entrevista.
 
-    Por favor, utiliza un tono profesional y cortés.
+    Mi nombre es [mi nombre] y tengo experiencia relevante en este sector. Por favor, utiliza un tono profesional y cortés, y sigue la estructura AIDA al escribir el correo.
     """
     
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Eres un asistente que genera correos formales."},
+            {"role": "system", "content": "Eres un asistente que genera correos formales siguiendo la estructura AIDA."},
             {"role": "user", "content": prompt}
         ]
     )

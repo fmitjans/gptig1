@@ -27,7 +27,8 @@ export default function JobDetails() {
   const { id } = useParams();
 
   const loadDetails = () => {
-    fetch(`http://localhost:8000/details?offer_id=${id}`)
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    fetch(`${backendUrl}/details?offer_id=${id}`)
     .then(response => response.json())
     .then(data => {
       console.log(data);
@@ -110,7 +111,8 @@ export default function JobDetails() {
     console.log(details);
     let details_json = JSON.stringify(details);
     setIsEmailLoading(true);
-    fetch(`http://localhost:8000/mail?details_json=${details_json}`)
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    fetch(`${backendUrl}/mail?details_json=${details_json}`)
     .then(response => response.json())
     .then(data => {
       console.log(data)
@@ -161,7 +163,7 @@ export default function JobDetails() {
           marginBottom: '20px',
         }}
       >
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold' }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#FFFFFF' }}>
           {job.titulo}
         </h1>
       </div>
@@ -222,7 +224,7 @@ export default function JobDetails() {
             marginBottom: '20px',
           }}
         >
-          <h3 style={{ fontWeight: 'bold' }}>
+          <h3 style={{ fontWeight: 'bold', color: '#FFFFFF' }}>
             Email de postulación
           </h3>
         </div>
@@ -256,7 +258,7 @@ export default function JobDetails() {
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           marginTop: '40px',
           marginBottom: '40px',
-          color: '#3d2822',
+          color: '#000000',
         }}
       >
         <h4 style={{ fontWeight: 'bold', marginBottom: '15px', color: '#000' }}>Descripción</h4>
