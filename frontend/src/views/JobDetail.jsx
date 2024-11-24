@@ -83,6 +83,7 @@ export default function JobDetails() {
   };
 
   const processedDetails = {
+    empresa: details.empresa,
     titulo: details.titulo,
     actividadEconomica: details.actividad,
     descripcion: {
