@@ -111,6 +111,7 @@ def get_details(offer_code):
     data['cargo']       = others[1].get_attribute('textContent').split(sep=':')[-1].strip()
     data['origen']      = others[2].get_attribute('textContent').split(sep=':')[-1].strip()
     data['practica']    = others[3].get_attribute('textContent').split(sep=':')[-1].strip()
+    data['fecha']       = "10 de noviembre, 2024"
 
     driver.close()
     return data
