@@ -45,6 +45,7 @@ def get_offers(search_params):
     n_educativo = encode_url(search_params["nivelEducativo"])
     jornada_laboral = encode_url(search_params["jornadaLaboral"])
     fecha_publicacion = encode_url(search_params["fechaPublicacion"])
+    comuna = encode_url(search_params["comuna"])
 
     # https://www.bne.cl/ofertas?mostrar=empleo
     # &textoLibre=
@@ -61,7 +62,7 @@ def get_offers(search_params):
     url += f'&idTipoJornada={jornada_laboral}'
     url += f'&fechaIniPublicacion={fecha_publicacion}'
     url += f'&numPaginaRecuperar=1&numResultadosPorPagina=10&clasificarYPaginar=true&totalOfertasActivas=6188'
-    url += f'&idComuna='
+    url += f'&idComuna={comuna}'
     print("URL:")
     print(url)
     print()
