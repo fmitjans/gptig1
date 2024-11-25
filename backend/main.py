@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 import openai
 import parameters as p
 
+from url import encode_url
+
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -37,7 +39,12 @@ def get_offers(search_params):
     # Verificar el contenido
     print("search_params después de cargar JSON:")
     print(json.dumps(search_params, indent=2, ensure_ascii=False))
-    url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={search_params["searchKeyword"]}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
+
+    searchKeyword = search_params["searchKeyword"]
+    region = encode_url(search_params["region"])
+
+    # url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={search_params["searchKeyword"]}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
+    url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={searchKeyword}&idRegion={region}&fechaIniPublicacion=&numPaginaRecuperar=1&numResultadosPorPagina=10&clasificarYPaginar=true&totalOfertasActivas=6188'
 
     driver = init_driver()
         
@@ -72,7 +79,6 @@ def get_offers(search_params):
 
 
     resultados_json_str = json.dumps(resultados, indent=2, ensure_ascii= False)
-    print(resultados_json_str)
 
     driver.close()
 
