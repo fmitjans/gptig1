@@ -42,9 +42,29 @@ def get_offers(search_params):
 
     searchKeyword = search_params["searchKeyword"]
     region = encode_url(search_params["region"])
+    n_educativo = encode_url(search_params["nivelEducativo"])
+    jornada_laboral = encode_url(search_params["jornadaLaboral"])
+    fecha_publicacion = encode_url(search_params["fechaPublicacion"])
 
-    # url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={search_params["searchKeyword"]}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
-    url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={searchKeyword}&idRegion={region}&fechaIniPublicacion=&numPaginaRecuperar=1&numResultadosPorPagina=10&clasificarYPaginar=true&totalOfertasActivas=6188'
+    # https://www.bne.cl/ofertas?mostrar=empleo
+    # &textoLibre=
+    # &idRegion=378
+    # &idNivelEducacional=5
+    # &idTipoJornada=9
+    # &fechaIniPublicacion=22%2F11%2F2024
+    # &numPaginaRecuperar=1&numResultadosPorPagina=10&clasificarYPaginar=true&totalOfertasActivas=6188
+    # &idComuna=1143
+    url = f'https://www.bne.cl/ofertas?mostrar=empleo' 
+    url += f'&textoLibre={searchKeyword}'
+    url += f'&idRegion={region}'
+    url += f'&idNivelEducacional={n_educativo}'
+    url += f'&idTipoJornada={jornada_laboral}'
+    url += f'&fechaIniPublicacion={fecha_publicacion}'
+    url += f'&numPaginaRecuperar=1&numResultadosPorPagina=10&clasificarYPaginar=true&totalOfertasActivas=6188'
+    url += f'&idComuna='
+    print("URL:")
+    print(url)
+    print()
 
     driver = init_driver()
         
