@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 import openai
 import parameters as p
 
+from url import encode_url
+
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -37,7 +39,33 @@ def get_offers(search_params):
     # Verificar el contenido
     print("search_params después de cargar JSON:")
     print(json.dumps(search_params, indent=2, ensure_ascii=False))
-    url = f'https://www.bne.cl/ofertas?mostrar=empleo&textoLibre={search_params["searchKeyword"]}&numPaginasTotal=479&numResultadosPorPagina=10&numResultadosTotal=4785&clasificarYPaginar=true&totalOfertasActivas=4785'
+
+    searchKeyword = search_params["searchKeyword"]
+    region = encode_url(search_params["region"])
+    n_educativo = encode_url(search_params["nivelEducativo"])
+    jornada_laboral = encode_url(search_params["jornadaLaboral"])
+    fecha_publicacion = encode_url(search_params["fechaPublicacion"])
+    comuna = encode_url(search_params["comuna"])
+
+    # https://www.bne.cl/ofertas?mostrar=empleo
+    # &textoLibre=
+    # &idRegion=378
+    # &idNivelEducacional=5
+    # &idTipoJornada=9
+    # &fechaIniPublicacion=22%2F11%2F2024
+    # &numPaginaRecuperar=1&numResultadosPorPagina=10&clasificarYPaginar=true&totalOfertasActivas=6188
+    # &idComuna=1143
+    url = f'https://www.bne.cl/ofertas?mostrar=empleo' 
+    url += f'&textoLibre={searchKeyword}'
+    url += f'&idRegion={region}'
+    url += f'&idNivelEducacional={n_educativo}'
+    url += f'&idTipoJornada={jornada_laboral}'
+    url += f'&fechaIniPublicacion={fecha_publicacion}'
+    url += f'&numPaginaRecuperar=1&numResultadosPorPagina=10&clasificarYPaginar=true&totalOfertasActivas=6188'
+    url += f'&idComuna={comuna}'
+    print("URL:")
+    print(url)
+    print()
 
     driver = init_driver()
         
@@ -72,7 +100,6 @@ def get_offers(search_params):
 
 
     resultados_json_str = json.dumps(resultados, indent=2, ensure_ascii= False)
-    print(resultados_json_str)
 
     driver.close()
 
