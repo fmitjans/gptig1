@@ -263,7 +263,7 @@ export default function JobDetails() {
       >
         <h4 style={{ fontWeight: 'bold', marginBottom: '15px', color: '#000' }}>Descripción</h4>
         <p style={{ lineHeight: '1.6', fontSize: '1.1rem' }}>
-          {job.descripcion.breve}
+          {job.descripcion.breve ? job.descripcion.breve : 'No indica'}
         </p>
       </div>
 
@@ -288,8 +288,8 @@ export default function JobDetails() {
               <FaBuilding style={{ marginRight: '10px' }} />
               Empresa y Contacto
             </h4>
-            <p><strong>Empresa:</strong> {job.empresa}</p>
-            <p><strong>Actividad económica:</strong> {job.actividadEconomica}</p>
+            <p><strong>Empresa:</strong> {job.empresa ? job.empresa : 'No indica'}</p>
+            <p><strong>Actividad económica:</strong> {job.actividadEconomica ? job.actividadEconomica : 'No indica'}</p>
           </div>
         </div>
 
@@ -312,10 +312,10 @@ export default function JobDetails() {
               <FaClipboardCheck style={{ marginRight: '10px' }} />
               Detalles importantes
             </h4>
-            <p><FaMapMarkerAlt style={{ marginRight: '5px' }} /> {job.descripcion.ubicacion}</p>
-            <p><FaMoneyBillWave style={{ marginRight: '5px' }} /> Sueldo: {job.descripcion.sueldo}</p>
-            <p><FaClock style={{ marginRight: '5px' }} /> Jornada: {job.descripcion.jornada}</p>
-            <p>Fecha de publicación: {job.descripcion.fecha}</p>
+            <p><FaMapMarkerAlt style={{ marginRight: '5px' }} /> {job.descripcion.ubicacion ? job.descripcion.ubicacion : "No indica"}</p>
+            <p><FaMoneyBillWave style={{ marginRight: '5px' }} /> Sueldo: {job.descripcion.sueldo ? job.descripcion.sueldo : "No indica"}</p>
+            <p><FaClock style={{ marginRight: '5px' }} /> Jornada: {job.descripcion.jornada ? job.descripcion.jornada : "No indica"}</p>
+            <p><FaClock style={{ marginRight: '5px' }} />Fecha de publicación: {job.descripcion.fecha ? job.descripcion.fecha : "No indica"}</p>
           </div>
         </div>
       </div>
@@ -340,8 +340,8 @@ export default function JobDetails() {
               <FaUserGraduate style={{ marginRight: '10px' }} />
               Requisitos
             </h4>
-            <p><strong>Nivel educacional:</strong> {job.requisitos.nivelEducacional}</p>
-            <p><strong>Experiencia:</strong> {job.requisitos.experiencia}</p>
+            <p><strong>Nivel educacional:</strong> {job.requisitos.nivelEducacional ? job.requisitos.nivelEducacional : 'No indica'}</p>
+            <p><strong>Experiencia:</strong> {job.requisitos.experiencia ? job.requisitos.experiencia : 'No indica'}</p>
           </div>
         </div>
 
@@ -364,9 +364,9 @@ export default function JobDetails() {
               <FaBriefcase style={{ marginRight: '10px' }} />
               Características
             </h4>
-            <p><strong>Tipo de contrato:</strong> {job.caracteristicas.tipoContrato}</p>
-            <p><strong>Nivel del cargo:</strong> {job.caracteristicas.nivelCargo}</p>
-            <p><strong>Origen de la oferta:</strong> {job.caracteristicas.origenOferta}</p>
+            <p><strong>Tipo de contrato:</strong> {job.caracteristicas.tipoContrato ? job.caracteristicas.tipoContrato : 'No indica'}</p>
+            <p><strong>Nivel del cargo:</strong> {job.caracteristicas.nivelCargo ? job.caracteristicas.nivelCargo: 'No indica'}</p>
+            <p><strong>Origen de la oferta:</strong> {job.caracteristicas.origenOferta ? job.caracteristicas.origenOferta: 'No indica'}</p>
             <p><strong>Oferta de práctica profesional:</strong> {job.caracteristicas.ofertaPractica ? 'Sí' : 'No'}</p>
           </div>
         </div>

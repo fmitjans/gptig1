@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import data from '../assets/regiones_comunas.json';
 import logo2 from '../assets/imagenmejorada2.png';
 import { Link } from 'react-router-dom';
 import '../styles/App.css';
@@ -46,8 +47,6 @@ export default function Home() {
       fechaPublicacion,
     };
 
-    cnsole.log(searchParams);
-    
     setButtonText('Buscando...');
     setIsLoading(true); // Iniciar el estado de carga al hacer la búsqueda
 
@@ -181,6 +180,11 @@ export default function Home() {
           <p>Cargando resultados...</p>
           
         </div>
+      )  : (jobs.length === 0 || jobs[0].empresa === 'Empresa Ejemplo' ) ? (
+        <div className="text-center mt-5">
+          <h3>No se encontraron resultados</h3>
+          <p>Intenta realizar una búsqueda con otros filtros o palabras clave.</p>
+        </div>
       ) : (
         <div className="table-responsive mt-4">
           <table className="table table-bordered text-center">
@@ -192,7 +196,9 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {jobs.map((job, index) => (
+              {jobs
+              .filter(job => job.empresa !== 'Empresa Ejemplo') // Excluir trabajos con "Empresa Ejemplo"
+              .map((job, index) => (
                 <tr key={index}>
                   <td>
                     <Link to={`/job/${job.offerId}`} style={{ textDecoration: 'none', color: '#007bff' }}>
