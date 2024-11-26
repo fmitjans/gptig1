@@ -199,12 +199,13 @@ export default function Home() {
           <p>Cargando resultados...</p>
           
         </div>
-      )  : (jobs.length === 0 || jobs[0].empresa === 'Empresa Ejemplo' ) ? (
+      )  : (jobs.length === 0 ) ? (
         <div className="text-center mt-5">
           <h3>No se encontraron resultados</h3>
           <p>Intenta realizar una búsqueda con otros filtros o palabras clave.</p>
         </div>
       ) : (
+        !(jobs[0].empresa === 'Empresa Ejemplo') &&
         <div className="table-responsive mt-4">
           <table className="table table-bordered text-center">
             <thead className="table-light custom-table-header">
