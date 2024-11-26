@@ -10,7 +10,6 @@ import '../styles/App.css';
 export default function Home() {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [region, setRegion] = useState('');
-  const [comuna, setComuna] = useState('');
   const [nivelEducativo, setNivelEducativo] = useState('');
   const [jornadaLaboral, setJornadaLaboral] = useState('');
   const [fechaPublicacion, setFechaPublicacion] = useState('');
@@ -18,7 +17,6 @@ export default function Home() {
   const [jobs, setJobs] = useState([{
     empresa: 'Empresa Ejemplo',
     region: 'Región Ejemplo',
-    comuna: 'Comuna Ejemplo',
     nivelEducativo: 'Universitario',
     experiencia: '3 años',
     jornada: 'Full time',
@@ -28,7 +26,6 @@ export default function Home() {
     descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
   }]);
   const [isLoading, setIsLoading] = useState(false); // Estado de carga añadido
-  const [comunasPorRegion, setComunasPorRegion] = useState({});
   const [regiones, setRegiones] = useState([]);
 
   const nivelesEducativos = ['Sin educación formal', 'Educación básica incompleta', 'Educación básica completa', 
@@ -38,7 +35,6 @@ export default function Home() {
   const fechasPublicacion = ['', 'Hoy', 'Ayer', 'Menor a 3 días', 'Menor a 1 semana', 'Menor a 15 días', 'Menor a 1 mes', 'Menor a 2 meses'];
 
   useEffect(() => {
-    setComunasPorRegion(JSON.parse(JSON.stringify(data)));
     setRegiones(Object.keys(data));
   }, []);
 
@@ -46,11 +42,12 @@ export default function Home() {
     const searchParams = {
       searchKeyword,
       region,
-      comuna,
       nivelEducativo,
       jornadaLaboral,
       fechaPublicacion,
     };
+
+    console.log(searchParams);
 
     setButtonText('Buscando...');
     setIsLoading(true); // Iniciar el estado de carga al hacer la búsqueda
@@ -91,7 +88,7 @@ export default function Home() {
         <img src={logo2} alt="Jobsmatch Logo" style={{ maxWidth: '600px', height: 'auto' }} />
       </h1>
       {/* Search bar row */}
-      <div className="row mb-3">
+      <div className="row mb-3 justify-content-center">
         <div className="col-md-10">
           <input
             type="text"
@@ -111,7 +108,7 @@ export default function Home() {
 
       {/* Filters form */}
       <div className="row mb-3">
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={region}
@@ -126,23 +123,7 @@ export default function Home() {
             ))}
           </select>
         </div>
-        <div className="col-md-4">
-          <select
-            className="form-select"
-            value={comuna}
-            onChange={e => setComuna(e.target.value)}
-            aria-label="Select Comuna"
-            disabled={!region}
-          >
-            <option value="">Comuna</option>
-            {(comunasPorRegion[region] || []).map((com, index) => (
-              <option key={index} value={com}>
-                {com}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={nivelEducativo}
@@ -160,7 +141,7 @@ export default function Home() {
       </div>
 
       <div className="row mb-3">
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={jornadaLaboral}
@@ -175,7 +156,7 @@ export default function Home() {
             ))}
           </select>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={fechaPublicacion}
@@ -196,10 +177,14 @@ export default function Home() {
       {isLoading ? (
         <div className="text-center">
           <div className="spinner"></div>
-          <p>Cargando resultados...</p>
-          
+          <p>Cargando resultados...</p>          
         </div>
-      ) : (
+        ) : jobs.length === 0 ? (
+          <div className="text-center mt-5">
+            <h3>No se encontraron resultados</h3>
+            <p>Intenta realizar una búsqueda con otros filtros o palabras clave.</p>
+          </div>
+        ) : (
         <div className="table-responsive mt-4">
           <table className="table table-bordered text-center">
             <thead className="table-light custom-table-header">

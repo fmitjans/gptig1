@@ -338,8 +338,8 @@ export default function JobDetails() {
               <FaUserGraduate style={{ marginRight: '10px' }} />
               Requisitos
             </h4>
-            <p><strong>Nivel educacional:</strong> {job.requisitos.nivelEducacional}</p>
-            <p><strong>Experiencia:</strong> {job.requisitos.experiencia}</p>
+            <p><strong>Nivel educacional:</strong> {job.requisitos.nivelEducacional ? job.requisitos.nivelEducacional : "No requerido"}</p>
+            <p><strong>Experiencia:</strong> {job.requisitos.experiencia ? job.requisitos.experiencia : "No r"}</p>
           </div>
         </div>
 

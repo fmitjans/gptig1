@@ -87,5 +87,29 @@
   transform: translateY(-2px);
 }
 
+.filters-container {
+  display: flex;
+  flex-direction: column; /* Organizar filtros verticalmente */
+  align-items: center; /* Centrar filtros horizontalmente */
+  justify-content: center; /* Centrar filtros verticalmente */
+  gap: 15px; /* Espaciado entre filtros */
+}
+
+.filters-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Espaciado entre columnas */
+  width: 100%; /* Asegurar que ocupe todo el espacio horizontal */
+  max-width: 800px; /* Limitar el ancho máximo */
+}
+
+.filters-row select,
+.filters-row input {
+  width: 100%; /* Hacer que los selectores sean del mismo tamaño */
+  max-width: 400px; /* Limitar el ancho máximo */
+  padding: 10px; /* Añadir espacio interno */
+}
+
+
 
 
