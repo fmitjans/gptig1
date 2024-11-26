@@ -68,16 +68,24 @@ def get_offers(search_params):
         
     driver.get(url)
 
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.CLASS_NAME, "row.margenVerticales.resultadoOfertas.noMargingLaterales.seccionOferta"))
     )
     no_results_message = "No se encontraron resultados para su búsqueda."
+    
     try:
         no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
-        if no_results_message in no_results_element.text:
-            print("No se encontraron resultados.")
-            driver.close()
-            return json.dumps([])  # O retorna un JSON vacío, por ejemplo: json.dumps([])
+        if no_results_element:
+            WebDriverWait(driver, 15).until(
+                EC.text_to_be_present_in_element((By.XPATH, "//div[@id='paginaOfertas']/h3"), "No se encontraron resultados para su búsqueda.")
+            )
+            no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
+            if no_results_message in no_results_element.text:
+                print("No se encontraron resultados.")
+                driver.close()
+                return json.dumps([])  # O retorna un JSON vacío, por ejemplo: json.dumps([])
+            else:
+                print("No se encontró el mensaje de 'No resultados'")
         
     except Exception as e:
         print("No se encontró el mensaje de 'No resultados', continuando con el scraping.")
@@ -116,7 +124,7 @@ def get_details(offer_code):
     driver = init_driver()    
     driver.get(url)
 
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.ID, 'nombreOferta'))
     )
 
