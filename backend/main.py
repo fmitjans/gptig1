@@ -75,9 +75,11 @@ def get_offers(search_params):
     no_results_message = "No se encontraron resultados para su búsqueda."
     
     try:
-        WebDriverWait(driver, 10).until(
-            EC.text_to_be_present_in_element((By.XPATH, "//div[@id='paginaOfertas']/h3"), "No se encontraron resultados para su búsqueda.")
-        )
+        no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
+        if no_results_element:
+            WebDriverWait(driver, 10).until(
+                EC.text_to_be_present_in_element((By.XPATH, "//div[@id='paginaOfertas']/h3"), "No se encontraron resultados para su búsqueda.")
+            )
         no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
 
         if no_results_message in no_results_element.text:
