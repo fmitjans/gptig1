@@ -17,6 +17,9 @@ import parameters as p
 
 from url import encode_url
 
+import logging
+logging.basicConfig(filename='/logfile.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -74,12 +77,14 @@ def get_offers(search_params):
     no_results_message = "No se encontraron resultados para su búsqueda."
     try:
         no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
+        logging.info(f"{no_results_element}")
         if no_results_message in no_results_element.text:
             print("No se encontraron resultados.")
             driver.close()
             return json.dumps([])  # O retorna un JSON vacío, por ejemplo: json.dumps([])
         else:
             print("No se encontró el mensaje de 'No resultados'")
+            logging.info("No se encontró el mensaje de 'No resultados'")
         
     except Exception as e:
         print("No se encontró el mensaje de 'No resultados', continuando con el scraping.")
