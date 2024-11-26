@@ -78,6 +78,8 @@ def get_offers(search_params):
             print("No se encontraron resultados.")
             driver.close()
             return json.dumps([])  # O retorna un JSON vacío, por ejemplo: json.dumps([])
+        else:
+            print("No se encontró el mensaje de 'No resultados'")
         
     except Exception as e:
         print("No se encontró el mensaje de 'No resultados', continuando con el scraping.")
