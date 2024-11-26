@@ -120,6 +120,7 @@ def get_details(offer_code):
     contact     = panels[1].find_elements(By.CLASS_NAME, 'col-sm-12')
     description = panels[2].find_element(By.CLASS_NAME, 'col-sm-12')
     specs       = panels[2].find_elements(By.CLASS_NAME, 'col-sm-3')
+    dates       = panels[2].find_elements(By.TAG_NAME, 'span')[1:3]
     level       = panels[3].find_element(By.CLASS_NAME, 'col-sm-8')
     experience  = panels[3].find_element(By.CLASS_NAME, 'col-sm-4')
     others      = panels[4].find_elements(By.CLASS_NAME, 'col-sm-6')
@@ -138,7 +139,8 @@ def get_details(offer_code):
     data['cargo']       = others[1].get_attribute('textContent').split(sep=':')[-1].strip()
     data['origen']      = others[2].get_attribute('textContent').split(sep=':')[-1].strip()
     data['practica']    = others[3].get_attribute('textContent').split(sep=':')[-1].strip()
-    data['fecha']       = "10 de noviembre, 2024"
+    data['fecha']       = dates[0].get_attribute('textContent').strip() # "10 de noviembre, 2024"
+    data['expiracion']  = dates[1].get_attribute('textContent').strip()
 
     driver.close()
     return data
@@ -176,7 +178,7 @@ def generar_correo_openai(oferta):
 
 
 if __name__ == '__main__':
-    codigo = '2024-083180'
+    codigo = '2024-107738'
     data = get_details(codigo)
     print(data)
     #for i in data.items():
