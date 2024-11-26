@@ -68,7 +68,7 @@ def get_offers(search_params):
         
     driver.get(url)
 
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.CLASS_NAME, "row.margenVerticales.resultadoOfertas.noMargingLaterales.seccionOferta"))
     )
     no_results_message = "No se encontraron resultados para su búsqueda."
