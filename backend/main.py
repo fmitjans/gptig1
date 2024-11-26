@@ -71,7 +71,16 @@ def get_offers(search_params):
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.CLASS_NAME, "row.margenVerticales.resultadoOfertas.noMargingLaterales.seccionOferta"))
     )
-
+    no_results_message = "No se encontraron resultados para su búsqueda."
+    try:
+        no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
+        if no_results_message in no_results_element.text:
+            print("No se encontraron resultados.")
+            driver.close()
+            return json.dumps([])  # O retorna un JSON vacío, por ejemplo: json.dumps([])
+        
+    except Exception as e:
+        print("No se encontró el mensaje de 'No resultados', continuando con el scraping.")
     # Definir diccionarios para guardar resultados
     resultados = [dict() for i in range(5)]
     # Campos para scrapping
@@ -138,7 +147,7 @@ def get_details(offer_code):
     data['practica']    = others[3].get_attribute('textContent').split(sep=':')[-1].strip()
     data['fecha']       = dates[0].get_attribute('textContent').strip() # "10 de noviembre, 2024"
     data['expiracion']  = dates[1].get_attribute('textContent').strip()
-
+    print(data)
     driver.close()
     return data
 
