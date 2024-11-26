@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import data from '../assets/regiones_comunas.json';
 import logo2 from '../assets/imagenmejorada2.png';
 import { Link } from 'react-router-dom';
 import '../styles/App.css';
@@ -10,7 +9,6 @@ import '../styles/App.css';
 export default function Home() {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [region, setRegion] = useState('');
-  const [comuna, setComuna] = useState('');
   const [nivelEducativo, setNivelEducativo] = useState('');
   const [jornadaLaboral, setJornadaLaboral] = useState('');
   const [fechaPublicacion, setFechaPublicacion] = useState('');
@@ -18,7 +16,6 @@ export default function Home() {
   const [jobs, setJobs] = useState([{
     empresa: 'Empresa Ejemplo',
     region: 'Región Ejemplo',
-    comuna: 'Comuna Ejemplo',
     nivelEducativo: 'Universitario',
     experiencia: '3 años',
     jornada: 'Full time',
@@ -28,7 +25,6 @@ export default function Home() {
     descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies ultricies. Nullam nec purus nec nunc ultricies ultricies.'
   }]);
   const [isLoading, setIsLoading] = useState(false); // Estado de carga añadido
-  const [comunasPorRegion, setComunasPorRegion] = useState({});
   const [regiones, setRegiones] = useState([]);
 
   const nivelesEducativos = ['Sin educación formal', 'Educación básica incompleta', 'Educación básica completa', 
@@ -38,7 +34,6 @@ export default function Home() {
   const fechasPublicacion = ['', 'Hoy', 'Ayer', 'Menor a 3 días', 'Menor a 1 semana', 'Menor a 15 días', 'Menor a 1 mes', 'Menor a 2 meses'];
 
   useEffect(() => {
-    setComunasPorRegion(JSON.parse(JSON.stringify(data)));
     setRegiones(Object.keys(data));
   }, []);
 
@@ -46,12 +41,13 @@ export default function Home() {
     const searchParams = {
       searchKeyword,
       region,
-      comuna,
       nivelEducativo,
       jornadaLaboral,
       fechaPublicacion,
     };
 
+    cnsole.log(searchParams);
+    
     setButtonText('Buscando...');
     setIsLoading(true); // Iniciar el estado de carga al hacer la búsqueda
 
@@ -113,7 +109,7 @@ export default function Home() {
 
       {/* Filters form */}
       <div className="row mb-3">
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={region}
@@ -128,23 +124,7 @@ export default function Home() {
             ))}
           </select>
         </div>
-        <div className="col-md-4">
-          <select
-            className="form-select"
-            value={comuna}
-            onChange={e => setComuna(e.target.value)}
-            aria-label="Select Comuna"
-            disabled={!region}
-          >
-            <option value="">Comuna</option>
-            {(comunasPorRegion[region] || []).map((com, index) => (
-              <option key={index} value={com}>
-                {com}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={nivelEducativo}
@@ -162,7 +142,7 @@ export default function Home() {
       </div>
 
       <div className="row mb-3">
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={jornadaLaboral}
@@ -177,7 +157,7 @@ export default function Home() {
             ))}
           </select>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-5">
           <select
             className="form-select"
             value={fechaPublicacion}
