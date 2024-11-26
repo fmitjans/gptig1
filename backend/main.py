@@ -69,7 +69,7 @@ def get_offers(search_params):
         
     driver.get(url)
 
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.CLASS_NAME, "row.margenVerticales.resultadoOfertas.noMargingLaterales.seccionOferta"))
     )
     no_results_message = "No se encontraron resultados para su búsqueda."
@@ -77,7 +77,7 @@ def get_offers(search_params):
     try:
         no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
         if no_results_element:
-            WebDriverWait(driver, 10).until(
+            WebDriverWait(driver, 15).until(
                 EC.text_to_be_present_in_element((By.XPATH, "//div[@id='paginaOfertas']/h3"), "No se encontraron resultados para su búsqueda.")
             )
             no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
@@ -125,7 +125,7 @@ def get_details(offer_code):
     driver = init_driver()    
     driver.get(url)
 
-    WebDriverWait(driver, 10).until(
+    WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.ID, 'nombreOferta'))
     )
 
