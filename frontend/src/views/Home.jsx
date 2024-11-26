@@ -36,6 +36,22 @@ export default function Home() {
 
   useEffect(() => {
     setRegiones(Object.keys(data));
+    // Restaurar valores de búsqueda desde localStorage
+    const savedFilters = localStorage.getItem('jobSearchFilters');
+    const savedJobs = localStorage.getItem('jobSearchResults');
+
+    if (savedFilters) {
+      const filters = JSON.parse(savedFilters);
+      setSearchKeyword(filters.searchKeyword);
+      setRegion(filters.region);
+      setNivelEducativo(filters.nivelEducativo);
+      setJornadaLaboral(filters.jornadaLaboral);
+      setFechaPublicacion(filters.fechaPublicacion);
+    }
+
+    if (savedJobs) {
+      setJobs(JSON.parse(savedJobs));
+    }
   }, []);
 
   const handleSearch = () => {
@@ -64,6 +80,9 @@ export default function Home() {
         }));
         setJobs(renamedJobs);
         console.log(renamedJobs);
+        // Guardar filtros y resultados en localStorage
+        localStorage.setItem('jobSearchFilters', JSON.stringify(searchParams));
+        localStorage.setItem('jobSearchResults', JSON.stringify(renamedJobs));
       })
       .catch(error => {
         console.error('Error:', error);
