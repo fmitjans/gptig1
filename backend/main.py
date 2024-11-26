@@ -18,7 +18,7 @@ import parameters as p
 from url import encode_url
 
 import logging
-logging.basicConfig(filename='/logfile.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+logging.basicConfig(filename='logfile.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
