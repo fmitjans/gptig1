@@ -78,6 +78,9 @@ def get_offers(search_params):
     try:
         no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
         logging.info(f"{no_results_element}")
+        logging.info(f"Texto encontrado en el elemento: '{no_results_element.text}'")
+        cleaned_text = no_results_element.text.strip()
+        logging.info(f"{cleaned_text}")
         if no_results_message in no_results_element.text:
             print("No se encontraron resultados.")
             driver.close()
