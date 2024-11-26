@@ -17,7 +17,6 @@ import parameters as p
 
 from url import encode_url
 
-
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
