@@ -80,14 +80,13 @@ def get_offers(search_params):
             WebDriverWait(driver, 10).until(
                 EC.text_to_be_present_in_element((By.XPATH, "//div[@id='paginaOfertas']/h3"), "No se encontraron resultados para su búsqueda.")
             )
-        no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
-
-        if no_results_message in no_results_element.text:
-            print("No se encontraron resultados.")
-            driver.close()
-            return json.dumps([])  # O retorna un JSON vacío, por ejemplo: json.dumps([])
-        else:
-            print("No se encontró el mensaje de 'No resultados'")
+            no_results_element = driver.find_element(By.XPATH, "//div[@id='paginaOfertas']/h3")
+            if no_results_message in no_results_element.text:
+                print("No se encontraron resultados.")
+                driver.close()
+                return json.dumps([])  # O retorna un JSON vacío, por ejemplo: json.dumps([])
+            else:
+                print("No se encontró el mensaje de 'No resultados'")
         
     except Exception as e:
         print("No se encontró el mensaje de 'No resultados', continuando con el scraping.")
